@@ -1,38 +1,89 @@
 package dev.be.blog.domain;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
 public class Post {
     private Category category;
-    private Context context;
     private Profile user;
+    private String title;
+    private String text;
+    private String updatedDate;
+    private final String createdDate;
 
-    private Post(){}
 
-    private Post(Category category , Context context, Profile user){
-        this.category = category;
-        this.context = context;
-        this.user = user;
-    }
 
-    public static Post register(Category category, Context context, Profile user){
-        return new Post(category, context, user);
-    }
-
-    public void edit(String title, String text){
-        context.edit(title, text);
-    }
-    public void editTitle(String title){
-        context.editTitle(title);
-    }
-
-    public void editText(String text){
-        context.editText(text);
-    }
-
-    public void print(){
-        category.printCategory();
-        context.print();
-        user.printNickname();
+    private String calculateTime(){
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        // Timestamp to String
+        return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(currentTimestamp);
     }
 
 
+    public Builder edit(){
+        return new Builder();
+    }
+
+    private Post(Builder builder) {
+        this.category = builder.category;
+        this.user = builder.user;
+        this.title = builder.title;
+        this.text = builder.text;
+        this.createdDate = calculateTime();
+    }
+
+    // 빌더 호출, 외부에서 Post.builder() 으로 접근할 수 있도록 static 메소드로 생성
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    // static 형태의 inner class 생성
+    public static class Builder {
+        private Category category;
+        private Profile user;
+        private String title;
+        private String text;
+
+
+        private Builder() {};
+
+        public Builder category(Category category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder user(Profile user) {
+            this.user = user;
+            return this;
+        }
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder text(String text) {
+            this.text = text;
+            return this;
+        }
+
+
+
+
+        // 마지막에 build 메소드를 실행하면 this가 return 되도록 구현
+        public Post build() {
+            return new Post(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "category=" + category +
+                ", user=" + user +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", updatedDate='" + updatedDate + '\'' +
+                ", createdDate='" + createdDate + '\'' +
+                '}';
+    }
 }
