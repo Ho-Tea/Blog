@@ -8,10 +8,11 @@ public class Profile {
     private String address;
     private String image;   // 프로필 이미지는 우선 String으로 표현
 
-    public void printNickname(){
-        System.out.println("=======Writer=========");
-        System.out.println(nickname);
+    public Builder edit(){
+        return new Builder();
     }
+
+
     private Profile(Builder builder) {
         this.name = builder.name;
         this.nickname = builder.nickname;
@@ -69,5 +70,18 @@ public class Profile {
         public Profile build() {
             return new Profile(this);
         }
+    }
+
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "name='" + name + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", image='" + image + '\'' +
+                '}';
     }
 }
