@@ -3,15 +3,12 @@ package dev.be.blog.domain;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-public class Post {
-    private Category category;
-    private Profile user;
+public class Post implements Content {
+    private User user;
     private String title;
     private String text;
     private String updatedDate;
     private final String createdDate;
-
-
 
     private String calculateTime(){
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
@@ -20,12 +17,36 @@ public class Post {
     }
 
 
-    public Builder edit(){
-        return new Builder();
+    public void editText(String text){
+        this.text = text;
+        this.updatedDate = calculateTime();
+    }
+
+
+
+    @Override
+    public void rename(String name) {
+        this.text = text;
+        this.updatedDate = calculateTime();
+    }
+
+    @Override
+    public String getName() {
+        return title;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "user=" + user +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", updatedDate='" + updatedDate + '\'' +
+                ", createdDate='" + createdDate + '\'' +
+                '}';
     }
 
     private Post(Builder builder) {
-        this.category = builder.category;
         this.user = builder.user;
         this.title = builder.title;
         this.text = builder.text;
@@ -37,22 +58,19 @@ public class Post {
         return new Builder();
     }
 
+
     // static 형태의 inner class 생성
     public static class Builder {
-        private Category category;
-        private Profile user;
+        private User user;
         private String title;
         private String text;
 
 
         private Builder() {};
 
-        public Builder category(Category category) {
-            this.category = category;
-            return this;
-        }
 
-        public Builder user(Profile user) {
+
+        public Builder user(User user) {
             this.user = user;
             return this;
         }
@@ -73,17 +91,5 @@ public class Post {
         public Post build() {
             return new Post(this);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "category=" + category +
-                ", user=" + user +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                ", updatedDate='" + updatedDate + '\'' +
-                ", createdDate='" + createdDate + '\'' +
-                '}';
     }
 }
