@@ -16,8 +16,8 @@ import java.util.List;
 
 public class BlogController {
 
-    private static final InputView INPUT_VIEW = new InputView();
-    private static final OutputView OUTPUT_VIEW = new OutputView();
+    private static final InputView INPUT = new InputView();
+    private static final OutputView OUTPUT = new OutputView();
     private User user;
     private Category contents;
 
@@ -27,8 +27,8 @@ public class BlogController {
             enroll();
             contents = Category.create(user.getNickname()); // 유저 이름으로 프로젝트를 생성한다
             while (!Option.isClose()) {
-                OUTPUT_VIEW.printCommand();
-                INPUT_VIEW.inputCommand();
+                OUTPUT.printCommand();
+                INPUT.inputCommand();
                 loading();
             }
             }catch(IOException e){
@@ -53,13 +53,13 @@ public class BlogController {
     }
 
     public void enroll() throws IOException{ // 회원 등록
-        user = INPUT_VIEW.enroll();
+        user = INPUT.enroll();
     }
 
     public void lookUp() throws IOException{
-        String title = INPUT_VIEW.lookUpPost();
+        String title = INPUT.lookUpPost();
         Content found = contents.find(title);
-        OUTPUT_VIEW.printPost((Post) found);
+        OUTPUT.printPost((Post) found);
     }
 
 
@@ -69,37 +69,37 @@ public class BlogController {
     private void showAll(Category contents){    // 모든 글과 카테고리 요약을 보여준다
         for(Content content : contents.getChild()){
             if(content.getClass().equals(Post.class)){
-                OUTPUT_VIEW.printContent(content);
+                OUTPUT.printContent(content);
             }else{
-                OUTPUT_VIEW.printContent(content);
+                OUTPUT.printContent(content);
                 showAll((Category) content);
             }
         }
     }
     private void showCategory(Category contents){   // 카테고리만 보여준다
         for(Content content : contents.getChild()){
-            OUTPUT_VIEW.printContent(content);
+            OUTPUT.printContent(content);
             showCategory((Category) content);
         }
     }
     public void write() throws IOException{
-        PostDto postDto = INPUT_VIEW.writePost();
+        PostDto postDto = INPUT.writePost();
         showCategory(contents);
-        CategoryDto categoryDto = INPUT_VIEW.selectCategory();
+        CategoryDto categoryDto = INPUT.selectCategory();
         contents.findAndAdd(postDto, categoryDto,user);
     }
 
     public void rename() throws IOException{
-        RenameDto renameDto = INPUT_VIEW.rename();
+        RenameDto renameDto = INPUT.rename();
         contents.findAndRename(renameDto);
     }
 
     public void delete() throws IOException{
-            String name = INPUT_VIEW.delete();
+            String name = INPUT.delete();
             contents.findAndRemove(name);
     }
     public void createCategory() throws IOException{
 
-        String name = INPUT_VIEW.delete();
+        String name = INPUT.delete();
     }
 }
