@@ -1,5 +1,7 @@
 package dev.be.blog.dto;
 
+import dev.be.blog.domain.User;
+
 public class UserDto {
     private String name;
     private String nickname;
@@ -28,4 +30,12 @@ public class UserDto {
         this.age = age;
         this.email = email;
     }
+
+    public static User toEntity(UserDto userDto){
+        return User.create(userDto.getName(),
+                userDto.getNickname(),
+                userDto.getAge(),
+                userDto.getEmail());
+    }
+
 }
