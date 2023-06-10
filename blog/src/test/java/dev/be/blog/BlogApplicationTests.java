@@ -1,5 +1,7 @@
 package dev.be.blog;
 
+import dev.be.blog.domain.Category;
+import dev.be.blog.domain.Content;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,6 +18,7 @@ class BlogApplicationTests {
         System.out.println(result);
     }
 
+    
     @Test
     public void findUserEmailOrElseGet() {
         String userEmail = "Empty";
