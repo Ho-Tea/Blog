@@ -1,5 +1,7 @@
 package dev.be.blog.domain;
 
+import dev.be.blog.dto.PostDto;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
@@ -10,23 +12,20 @@ public class Post implements Content {
     private String updatedDate;
     private final String createdDate;
 
-    private String calculateTime(){
+    private String calculateTime() {
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         // Timestamp to String
         return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(currentTimestamp);
     }
 
-
-    public void editText(String text){
-        this.text = text;
-        this.updatedDate = calculateTime();
+    public static PostDto toDto(Post post) {
+        return new PostDto(post.title, post.text, post.updatedDate, post.createdDate, post.user.getNickname());
     }
-
 
 
     @Override
     public void rename(String name) {
-        this.text = text;
+        this.text = name;
         this.updatedDate = calculateTime();
     }
 
@@ -35,16 +34,6 @@ public class Post implements Content {
         return title;
     }
 
-    @Override
-    public String toString() {
-        return "Post{" +
-                "user=" + user +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                ", updatedDate='" + updatedDate + '\'' +
-                ", createdDate='" + createdDate + '\'' +
-                '}';
-    }
 
     private Post(Builder builder) {
         this.user = builder.user;
@@ -64,12 +53,8 @@ public class Post implements Content {
         private User user;
         private String title;
         private String text;
-
-
-        private Builder() {};
-
-
-
+        private Builder() {
+        }
         public Builder user(User user) {
             this.user = user;
             return this;
@@ -78,15 +63,10 @@ public class Post implements Content {
             this.title = title;
             return this;
         }
-
         public Builder text(String text) {
             this.text = text;
             return this;
         }
-
-
-
-
         // 마지막에 build 메소드를 실행하면 this가 return 되도록 구현
         public Post build() {
             return new Post(this);
