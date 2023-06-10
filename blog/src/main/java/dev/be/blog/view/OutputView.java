@@ -1,29 +1,32 @@
 package dev.be.blog.view;
 
-import dev.be.blog.domain.Category;
 import dev.be.blog.domain.Content;
-import dev.be.blog.domain.Option;
+import dev.be.blog.domain.Blog;
+import dev.be.blog.domain.ContentType;
 import dev.be.blog.domain.Post;
+import dev.be.blog.dto.CategoryDto;
+import dev.be.blog.dto.PostDto;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class OutputView {
-    public void printContent(Content content){
+    // content는 인터페이스이므로 괜찮
+    public void content(CategoryDto categoryDto){
         System.out.println("====================");
         System.out.println();
-        System.out.println(content.getClass().getName() + " = " + content.getName());
+        System.out.println(categoryDto);
         System.out.println();
         System.out.println("====================");
     }
-    public void printPost(Post post){
-        System.out.println(post);
+    public void post(PostDto postDto){
+        System.out.println(postDto);
     }
 
-    public void printCommand(){
+    public void command(){
         System.out.println("======================");
         System.out.println();
-        for(Option option : Option.values()){
-            System.out.println(option.getNumber() + " : " + option );
+        for(Blog blog : Blog.command()){
+            System.out.println(blog.ordinal() + " : " + blog);
         }
         System.out.println();
         System.out.println("======================");
