@@ -1,18 +1,13 @@
 package dev.be.blog.controller;
 
-import ch.qos.logback.classic.joran.action.ContextNameAction;
 import dev.be.blog.domain.*;
-import dev.be.blog.dto.CategoryDto;
-import dev.be.blog.dto.PostDto;
-import dev.be.blog.dto.RenameDto;
+import dev.be.blog.dto.*;
+import dev.be.blog.exception.DuplicateNameException;
 import dev.be.blog.exception.NotFoundException;
 import dev.be.blog.view.InputView;
 import dev.be.blog.view.OutputView;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class BlogController {
 
@@ -24,82 +19,104 @@ public class BlogController {
 
     public void run() {
         try {
-            enroll();
-            contents = Category.create(user.getNickname()); // 유저 이름으로 프로젝트를 생성한다
-            while (!Option.isClose()) {
-                OUTPUT.printCommand();
-                INPUT.inputCommand();
-                loading();
-            }
-            }catch(IOException e){
-                e.getMessage();
-            }catch(NotFoundException e){
-                e.getMessage();
-            }
+            UserDto userDto = inputUserDetails();
+            createBlogByUserName(userDto);
+            while (!Blog.ofClose()) {
+                OUTPUT.command();
+                INPUT.command();
+                loading();}
+        } catch (IOException e) {
+            e.getMessage();
+        } catch (NotFoundException e) {
+            e.getMessage();
+        }
+    }
+    public UserDto inputUserDetails() throws IOException{
+        UserDto userDto = INPUT.enrollUser();
+        return userDto;
     }
 
-    private void loading() throws IOException, NotFoundException{
-        if(Option.WRITE.equals(Option.status)){
-            write();
-        } else if (Option.UPDATE.equals(Option.status)) {
+    public void createBlogByUserName(UserDto userDto){
+        user = UserDto.toEntity(userDto);
+        contents = Category.create(user.getNickname());
+    }
+
+
+    private void loading() throws IOException, NotFoundException {
+        if (Blog.ofWrite()) {
+            ContentDto contentDto = createContent();
+            write(contentDto);
+        } else if (Blog.ofUpdate()) {
             rename();
-        } else if (Option.DELETE.equals(Option.status)){
+        } else if (Blog.ofDelete()) {
             delete();
-        } else if (Option.LOOKUP.equals(Option.status)) {
+        } else if (Blog.ofLookUp()) {
             lookUp();
-        } else if (Option.MAIN.equals(Option.status)){
-            print();
+        } else if (Blog.of()) {
+            show(contents);
         }
     }
 
-    public void enroll() throws IOException{ // 회원 등록
-        user = INPUT.enroll();
+    public ContentDto createContent() throws IOException{
+        ContentType contentType = INPUT.selectContentType();
+        CategoryDto parentCategoryDto = INPUT.selectCategory();
+        return new ContentDto(contentType, parentCategoryDto);
+    }
+    public void write(ContentDto contentDto) throws IOException{
+        try {
+            if (contentDto.getContentType().equals(ContentType.POST)) {
+                PostDto postDto = INPUT.post();
+                save(postDto, contentDto.getCategoryDto());
+            } else if (contentDto.getContentType().equals(ContentType.CATEGORY)) {
+                CategoryDto childCategoryDto = INPUT.category();
+                save(childCategoryDto, contentDto.getCategoryDto());
+            }
+        } catch (NotFoundException e){
+            e.printStackTrace();
+        }catch (DuplicateNameException e){
+            e.printStackTrace();
+        }
+
     }
 
-    public void lookUp() throws IOException{
-        String title = INPUT.lookUpPost();
-        Content found = contents.find(title);
-        OUTPUT.printPost((Post) found);
+    public void save(PostDto postDto, CategoryDto parentCategoryDto){
+        Post post = PostDto.toEntity(postDto, user);
+        Category category = CategoryDto.toEntity(parentCategoryDto);
+        contents.findAndAdd(post, category);
+    }
+    public void save(CategoryDto childCategoryDto, CategoryDto parentCategoryDto){
+        Category parentCategory = CategoryDto.toEntity(parentCategoryDto);
+        Category childCategory = CategoryDto.toEntity(childCategoryDto);
+        contents.findAndAdd(childCategory, parentCategory);
     }
 
 
-    public void print(){    // 지금까지 작성한 글들의 제목과 카테고리 모두를 볼 수 있다
-        showAll(contents);
-    }
-    private void showAll(Category contents){    // 모든 글과 카테고리 요약을 보여준다
-        for(Content content : contents.getChild()){
-            if(content.getClass().equals(Post.class)){
-                OUTPUT.printContent(content);
-            }else{
-                OUTPUT.printContent(content);
-                showAll((Category) content);
+
+    private void show(Category contents) {
+        CategoryDto categoryDto = CategoryDto.from(contents);
+        OUTPUT.content(categoryDto);
+        for (Content content : contents.getChild()) {
+            if (ContentType.valueOf(content).equals(ContentType.CATEGORY)) {
+                show((Category) content);
             }
         }
     }
-    private void showCategory(Category contents){   // 카테고리만 보여준다
-        for(Content content : contents.getChild()){
-            OUTPUT.printContent(content);
-            showCategory((Category) content);
-        }
-    }
-    public void write() throws IOException{
-        PostDto postDto = INPUT.writePost();
-        showCategory(contents);
-        CategoryDto categoryDto = INPUT.selectCategory();
-        contents.findAndAdd(postDto, categoryDto,user);
+
+    public void lookUp() throws IOException {
+        String title = INPUT.findPost();
+        Post found = (Post) contents.find(title);
+        PostDto foundDto = Post.toDto(found);
+        OUTPUT.post(foundDto);
     }
 
-    public void rename() throws IOException{
-        RenameDto renameDto = INPUT.rename();
-        contents.findAndRename(renameDto);
+    public void rename() throws IOException {
+        Rename rename = INPUT.rename();
+        contents.findAndRename(rename);
     }
 
-    public void delete() throws IOException{
-            String name = INPUT.delete();
-            contents.findAndRemove(name);
-    }
-    public void createCategory() throws IOException{
-
+    public void delete() throws IOException {
         String name = INPUT.delete();
+        contents.findAndRemove(name);
     }
+
 }
