@@ -1,7 +1,5 @@
 package dev.be.blog.domain;
 
-import dev.be.blog.dto.UserDto;
-
 public class User {
     private String name;
     private String nickname;
@@ -15,12 +13,11 @@ public class User {
         this.email = email;
     }
 
-    public static User create(UserDto userDto){
-        return new User(userDto.getName(),
-                userDto.getNickname(),
-                userDto.getAge(),
-                userDto.getEmail());
+    public static User create(String name, String nickname, int age, String email) {
+        return new User(name, nickname, age, email);
     }
 
-
+    public String getNickname() {
+        return nickname;
+    }
 }
