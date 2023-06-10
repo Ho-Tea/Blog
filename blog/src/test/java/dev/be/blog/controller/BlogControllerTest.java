@@ -36,6 +36,12 @@ class BlogControllerTest {
         assertThatThrownBy(() -> blogController.save(postDto, parentCategoryDto)).isInstanceOf(NotFoundException.class);
     }
 
-    
+    @Test
+    @DisplayName("카테고리 생성시 중복된 이름의 카테고리를 생성 할 수 없다")
+    void createCategory(){
+        CategoryDto parentCategoryDto = new CategoryDto("Test");
+        CategoryDto childCategoryDto = new CategoryDto("Test");
+        assertThatThrownBy(() -> blogController.save(childCategoryDto, parentCategoryDto)).isInstanceOf(DuplicateNameException.class);
+    }
 
 }
