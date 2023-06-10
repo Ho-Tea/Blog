@@ -63,18 +63,12 @@ public class BlogController {
         return new ContentDto(contentType, parentCategoryDto);
     }
     public void write(ContentDto contentDto) throws IOException{
-        try {
-            if (contentDto.getContentType().equals(ContentType.POST)) {
-                PostDto postDto = INPUT.post();
-                save(postDto, contentDto.getCategoryDto());
-            } else if (contentDto.getContentType().equals(ContentType.CATEGORY)) {
-                CategoryDto childCategoryDto = INPUT.category();
-                save(childCategoryDto, contentDto.getCategoryDto());
-            }
-        } catch (NotFoundException e){
-            e.printStackTrace();
-        }catch (DuplicateNameException e){
-            e.printStackTrace();
+        if (contentDto.getContentType().equals(ContentType.POST)) {
+            PostDto postDto = INPUT.post();
+            save(postDto, contentDto.getCategoryDto());
+        } else if (contentDto.getContentType().equals(ContentType.CATEGORY)) {
+            CategoryDto childCategoryDto = INPUT.category();
+            save(childCategoryDto, contentDto.getCategoryDto());
         }
 
     }
