@@ -36,12 +36,12 @@ public class Category implements Content {
         return Collections.unmodifiableList(contents);
     }
 
-    public Content find(String name) {
+    public Content find(String categoryName) {
         for (Content content : contents) {
-            if (content.getName().equals(name)) {
+            if (content.getName().equals(categoryName)) {
                 return content;
             } else if (content.getClass().equals(Category.class)) {
-                return ((Category) content).find(name);
+                return ((Category) content).find(categoryName);
             }
         }
         throw new NotFoundException();
@@ -62,22 +62,26 @@ public class Category implements Content {
 
     public void findAndAdd(Post post, Category category) {
         if(category.equals(this)){
-            throw new DuplicateNameException();
+            add(post);
+        } else{
+            Category found = (Category) find(category.getName());
+            found.add(post);
         }
-        Category found = (Category) find(category.getName());
-        found.add(post);
+
     }
 
     public void findAndAdd(Category childCategory, Category parentCategory) {
         if(parentCategory.equals(this)){
-            throw new DuplicateNameException();
+            add(childCategory);
+        } else {
+            Category found = (Category) find(parentCategory.getName());
+            found.add(childCategory);
         }
-        Category found = (Category) find(parentCategory.getName());
-        found.add(childCategory);
+
     }
 
     public void findAndRename(Rename rename) {
-        if(rename.getNewName().equals(name)){
+        if(rename.getOldName().equals(this.name)){
             rename(rename.getNewName());
         }else {
             Content found = find(rename.getOldName());
@@ -97,16 +101,19 @@ public class Category implements Content {
     }
 
 
-    private void add(Content content) {
-        if (isExist(content.getName())) {
+    public void add(Content content) {
+        if(isExist(content.getName())){
             throw new DuplicateNameException();
         }
         contents.add(content);
     }
 
 
-    private boolean isExist(String contentName) {
+    public boolean isExist(String contentName) {
         boolean exists = false;
+        if(this.name.equals(contentName)){
+            return true;
+        }
         for (Content content : contents) {
             if (content.getName().equals(contentName) || name.equals(contentName)) {
                 exists = true;

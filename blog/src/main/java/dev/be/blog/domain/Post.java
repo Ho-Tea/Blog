@@ -25,7 +25,7 @@ public class Post implements Content {
 
     @Override
     public void rename(String name) {
-        this.text = name;
+        this.title = name;
         this.updatedDate = calculateTime();
     }
 
