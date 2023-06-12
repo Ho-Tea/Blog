@@ -72,6 +72,22 @@ class CategoryTest {
         assertThat(post.getName()).isEqualTo(rename.getNewName());
     }
 
+    @Test
+    @DisplayName("하위 카테고리를 삭제할 수 있다")
+    void deleteCategory(){
+        String categoryName = childCategory.getName();
+        parentCategory.findAndRemove(categoryName);
+        assertThatThrownBy(() -> parentCategory.find(childCategory.getName())).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("하위 포스트를 삭제할 수 있다")
+    void deletePost(){
+        String postName = post.getName();
+        parentCategory.findAndRemove(postName);
+        assertThatThrownBy(() -> parentCategory.find(post.getName())).isInstanceOf(NotFoundException.class);
+    }
+
 
 
 }
