@@ -88,6 +88,14 @@ class CategoryTest {
         assertThatThrownBy(() -> parentCategory.find(post.getName())).isInstanceOf(NotFoundException.class);
     }
 
+    @Test
+    @DisplayName("이름으로 해당 컨텐트를 찾을 수 있다")
+    void retrieve(){
+        String postName = post.getName();
+        Content content = parentCategory.find(postName);
+        assertThat(content).isEqualTo(post);
+    }
+
 
 
 }

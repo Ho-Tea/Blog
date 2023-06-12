@@ -18,7 +18,7 @@ class BlogApplicationTests {
         System.out.println(result);
     }
 
-    
+
     @Test
     public void findUserEmailOrElseGet() {
         String userEmail = "Empty";
