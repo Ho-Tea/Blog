@@ -89,10 +89,10 @@ public class Category implements Content {
         }
     }
 
-    public Content findAndRemove(String name) {
+    public boolean findAndRemove(String name) {
         for (Content content : contents) {
             if (content.getName().equals(name)) {
-                remove(name);
+                return remove(content);
             } else if (content.getClass().equals(Category.class)) {
                 return ((Category) content).findAndRemove(name);
             }
@@ -127,8 +127,8 @@ public class Category implements Content {
 
     }
 
-    private void remove(String name) {
-        contents.remove(name);
+    private boolean remove(Content content) {
+        return contents.remove(content);
     }
 
 }
