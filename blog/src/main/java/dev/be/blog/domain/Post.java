@@ -18,10 +18,22 @@ public class Post implements Content {
         return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(currentTimestamp);
     }
 
-    public static PostDto toDto(Post post) {
-        return new PostDto(post.title, post.text, post.updatedDate, post.createdDate, post.user.getNickname());
+
+    public String getUser() {
+        return user.getNickname();
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public String getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
 
     @Override
     public boolean rename(String name) {

@@ -45,6 +45,14 @@ public class PostDto {
                 .build();
     }
 
+    public static PostDto fromEntity(Post post) {
+        return new PostDto(post.getName(),
+                post.getText(),
+                post.getUpdatedDate(),
+                post.getCreatedDate(),
+                post.getUser());
+    }
+
     @Override
     public String toString() {
         return '\n' + "  <Post>" +
