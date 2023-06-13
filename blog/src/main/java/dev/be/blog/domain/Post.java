@@ -24,9 +24,10 @@ public class Post implements Content {
 
 
     @Override
-    public void rename(String name) {
+    public boolean rename(String name) {
         this.title = name;
         this.updatedDate = calculateTime();
+        return true;
     }
 
     @Override
@@ -71,5 +72,11 @@ public class Post implements Content {
         public Post build() {
             return new Post(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return '\t' + "Post : " +
+                '\t' + "title='" + title + '\'';
     }
 }
