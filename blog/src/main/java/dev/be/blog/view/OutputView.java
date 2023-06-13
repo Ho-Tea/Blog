@@ -1,13 +1,8 @@
 package dev.be.blog.view;
 
-import dev.be.blog.domain.Content;
-import dev.be.blog.domain.Blog;
-import dev.be.blog.domain.ContentType;
-import dev.be.blog.domain.Post;
+import dev.be.blog.constant.Blog;
 import dev.be.blog.dto.CategoryDto;
 import dev.be.blog.dto.PostDto;
-
-import java.util.Arrays;
 
 public class OutputView {
     // content는 인터페이스이므로 괜찮
@@ -22,7 +17,7 @@ public class OutputView {
         System.out.println(postDto);
     }
 
-    public void command(){
+    public void commandType(){
         System.out.println("======================");
         System.out.println();
         for(Blog blog : Blog.command()){
@@ -30,6 +25,10 @@ public class OutputView {
         }
         System.out.println();
         System.out.println("======================");
+    }
+
+    public void exception(String message){
+        System.out.println(message);
     }
 
 }
