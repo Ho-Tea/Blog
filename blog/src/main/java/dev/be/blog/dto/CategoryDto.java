@@ -25,7 +25,7 @@ public class CategoryDto {
     }
 
 
-    public static CategoryDto from(Category category){
+    public static CategoryDto fromEntity(Category category){
         return new CategoryDto(category.getName(), category.getChild());
     }
 
