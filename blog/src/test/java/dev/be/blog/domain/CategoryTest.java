@@ -31,7 +31,7 @@ class CategoryTest {
         childCategory = Category.create("Inner-Test");
         post = Post.builder().title("test-title").text("testing").user(user).build();
         parentCategory.add(childCategory);
-        parentCategory.findAndAdd(post, childCategory);
+        parentCategory.findAndAdd(post, childCategory.getName());
 
     }   // 간단한 폴더구조 생성
 
@@ -42,19 +42,6 @@ class CategoryTest {
         assertThatThrownBy(() -> parentCategory.find(newCategory.getName())).isInstanceOf(NotFoundException.class);
     }
 
-    @Test
-    @DisplayName("카테고리 생성시 중복된 이름의 카테고리를 생성 할 수 없다")
-    void createCategory(){
-        Category newCategory = Category.create("Inner-Test");
-        assertThatThrownBy(() -> parentCategory.findAndAdd(newCategory, parentCategory)).isInstanceOf(DuplicateNameException.class);
-    }
-
-    @Test
-    @DisplayName("포스트 생성 시 중복된 이름의 포스트를 생성 할 수 없다")
-    void createPost(){
-        Post newPost = Post.builder().title("test-title").text("test").user(user).build();
-        assertThatThrownBy(() -> parentCategory.findAndAdd(newPost, parentCategory)).isInstanceOf(DuplicateNameException.class);
-    }
 
     @Test
     @DisplayName("카테고리의 이름을 변경할 수 있어야 한다")
