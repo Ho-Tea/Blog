@@ -1,15 +1,7 @@
 package dev.be.blog.domain;
 
-import dev.be.blog.controller.BlogController;
-import dev.be.blog.dto.CategoryDto;
-import dev.be.blog.dto.PostDto;
-import dev.be.blog.dto.Rename;
-import dev.be.blog.dto.UserDto;
-import dev.be.blog.exception.DuplicateNameException;
+import dev.be.blog.vo.Rename;
 import dev.be.blog.exception.NotFoundException;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
