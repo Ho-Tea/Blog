@@ -1,19 +1,13 @@
 package dev.be.blog.controller;
 
-import dev.be.blog.domain.ContentType;
 import dev.be.blog.dto.CategoryDto;
-import dev.be.blog.dto.ContentDto;
 import dev.be.blog.dto.PostDto;
 import dev.be.blog.dto.UserDto;
 import dev.be.blog.exception.DuplicateNameException;
 import dev.be.blog.exception.NotFoundException;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
 
-import java.io.IOException;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class BlogControllerTest {
     private static final BlogController blogController = new BlogController();
@@ -36,17 +30,15 @@ class BlogControllerTest {
     @Test
     @DisplayName("카테고리 생성시 중복된 이름의 카테고리를 생성 할 수 없다 - in Controller")
     void createCategory(){
-        CategoryDto parentCategoryDto = new CategoryDto("Test");
         CategoryDto childCategoryDto = new CategoryDto("Test");
-        assertThatThrownBy(() -> blogController.save(childCategoryDto, parentCategoryDto)).isInstanceOf(DuplicateNameException.class);
+        assertThatThrownBy(() -> blogController.validateName(childCategoryDto.getName())).isInstanceOf(DuplicateNameException.class);
     }
 
     @Test
     @DisplayName("포스트 생성 시 중복된 이름의 포스트를 생성 할 수 없다 - in Controller")
     void createPost(){
-        CategoryDto parentCategoryDto = new CategoryDto("Test");
         PostDto postDto = new PostDto("Test", "text");
-        assertThatThrownBy(() -> blogController.save(postDto, parentCategoryDto)).isInstanceOf(DuplicateNameException.class);
+        assertThatThrownBy(() -> blogController.validateName(postDto.getName())).isInstanceOf(DuplicateNameException.class);
     }
 
 
