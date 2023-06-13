@@ -14,8 +14,9 @@ public class Category implements Content {
     private List<Content> contents = new ArrayList<>();
 
     @Override
-    public void rename(String newName) {
+    public boolean rename(String newName) {
         this.name = newName;
+        return true;
     }
 
     @Override
@@ -60,33 +61,29 @@ public class Category implements Content {
         return Objects.hash(name, contents);
     }
 
-    public void findAndAdd(Post post, Category category) {
-        if(category.equals(this)){
-            add(post);
-        } else{
-            Category found = (Category) find(category.getName());
-            found.add(post);
+    public boolean findAndAdd(Post post, String categoryName) {
+        if(categoryName.equals(this.name)){
+            return add(post);
         }
+        Category found = (Category) find(categoryName);
+        return found.add(post);
+    }
+
+    public boolean findAndAdd(Category childCategory, String categoryName) {
+        if(categoryName.equals(this.name)){
+            return add(childCategory);
+        }
+        Category found = (Category) find(categoryName);
+        return found.add(childCategory);
 
     }
 
-    public void findAndAdd(Category childCategory, Category parentCategory) {
-        if(parentCategory.equals(this)){
-            add(childCategory);
-        } else {
-            Category found = (Category) find(parentCategory.getName());
-            found.add(childCategory);
-        }
-
-    }
-
-    public void findAndRename(Rename rename) {
+    public boolean findAndRename(Rename rename) {
         if(rename.getOldName().equals(this.name)){
-            rename(rename.getNewName());
-        }else {
-            Content found = find(rename.getOldName());
-            found.rename(rename.getNewName());
+            return rename(rename.getNewName());
         }
+        Content found = find(rename.getOldName());
+        return found.rename(rename.getNewName());
     }
 
     public boolean findAndRemove(String name) {
@@ -101,11 +98,8 @@ public class Category implements Content {
     }
 
 
-    public void add(Content content) {
-        if(isExist(content.getName())){
-            throw new DuplicateNameException();
-        }
-        contents.add(content);
+    public boolean add(Content content) {
+        return contents.add(content);
     }
 
 
@@ -131,4 +125,13 @@ public class Category implements Content {
         return contents.remove(content);
     }
 
+    @Override
+    public String toString() {
+        return '\n' + "  Category : " +
+                '\n' +
+                '\t' + "name='" + name + '\'' +
+                '\n' +
+                '\t' + "contents=" + contents +
+                '\n';
+    }
 }
