@@ -11,6 +11,7 @@ public class BlogApplication {
     public static void main(String[] args) throws InterruptedException, IOException {
 //        SpringApplication.run(BlogApplication.class, args);
         BlogController blog = new BlogController();
+        blog.init();
         blog.run();
 
     }
