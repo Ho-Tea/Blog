@@ -1,13 +1,16 @@
 package dev.be.blog.controller;
 
+import dev.be.blog.constant.Blog;
+import dev.be.blog.constant.ContentType;
 import dev.be.blog.domain.*;
 import dev.be.blog.dto.*;
 import dev.be.blog.exception.DuplicateNameException;
+import dev.be.blog.exception.IllegalContentTypeException;
 import dev.be.blog.exception.NotFoundException;
 import dev.be.blog.view.InputView;
 import dev.be.blog.view.OutputView;
 
-import java.io.IOException;
+import java.util.function.Supplier;
 
 public class BlogController {
 
@@ -17,100 +20,137 @@ public class BlogController {
     private Category contents;
 
 
-    public void run() {
-        try {
-            UserDto userDto = inputUserDetails();
-            createBlogByUserName(userDto);
-            while (!Blog.ofClose()) {
-                OUTPUT.command();
-                INPUT.command();
-                loading();}
-        } catch (IOException e) {
-            e.getMessage();
-        } catch (NotFoundException e) {
-            e.getMessage();
-        }
-    }
-    public UserDto inputUserDetails() throws IOException{
-        UserDto userDto = INPUT.enrollUser();
-        return userDto;
+    public void init() {
+        UserDto userDto = INPUT.enrollUser();   // 회원등록하는 과정에서의 예외는 우선 보류한다
+        createBlogByUserName(userDto);
     }
 
-    public void createBlogByUserName(UserDto userDto){
+    public void run() {
+        while (!Blog.ofClose()) {
+            inputCommand();
+            loading();
+        }
+    }
+
+    public void inputCommand() {
+        OUTPUT.commandType();
+        INPUT.command();
+    }
+
+
+    public void createBlogByUserName(UserDto userDto) {
         user = UserDto.toEntity(userDto);
         contents = Category.create(user.getNickname());
     }
 
 
-    private void loading() throws IOException, NotFoundException {
+    private void loading() {
         if (Blog.ofWrite()) {
-            ContentDto contentDto = createContent();
-            write(contentDto);
+            repeatLogic(this::write);
         } else if (Blog.ofUpdate()) {
-            rename();
+            repeatLogic(this::rename);
         } else if (Blog.ofDelete()) {
-            delete();
+            repeatLogic(this::delete);
         } else if (Blog.ofLookUp()) {
             lookUp();
         } else if (Blog.of()) {
-            show(contents);
+            show();
         }
     }
 
-    public ContentDto createContent() throws IOException{
+    public ContentDto createContent() {
         ContentType contentType = INPUT.selectContentType();
         CategoryDto parentCategoryDto = INPUT.selectCategory();
         return new ContentDto(contentType, parentCategoryDto);
     }
-    public void write(ContentDto contentDto) throws IOException{
-        if (contentDto.getContentType().equals(ContentType.POST)) {
-            PostDto postDto = INPUT.post();
-            save(postDto, contentDto.getCategoryDto());
-        } else if (contentDto.getContentType().equals(ContentType.CATEGORY)) {
-            CategoryDto childCategoryDto = INPUT.category();
-            save(childCategoryDto, contentDto.getCategoryDto());
+
+    public boolean write() {
+        ContentDto contentDto = createContent();
+        if (ContentType.isPost(contentDto.getContentType())) {
+            PostDto postDto = inputPostDetail();
+            return save(postDto, contentDto.getCategoryDto());
+        } else if (ContentType.isCategory(contentDto.getContentType())) {
+            CategoryDto childCategoryDto = inputCategoryDetail();
+            return save(childCategoryDto, contentDto.getCategoryDto());
         }
-
-    }
-
-    public void save(PostDto postDto, CategoryDto parentCategoryDto){
-        Post post = PostDto.toEntity(postDto, user);
-        Category category = CategoryDto.toEntity(parentCategoryDto);
-        contents.findAndAdd(post, category);
-    }
-    public void save(CategoryDto childCategoryDto, CategoryDto parentCategoryDto){
-        Category parentCategory = CategoryDto.toEntity(parentCategoryDto);
-        Category childCategory = CategoryDto.toEntity(childCategoryDto);
-        contents.findAndAdd(childCategory, parentCategory);
+        throw new IllegalContentTypeException();
     }
 
 
 
-    private void show(Category contents) {
+    public PostDto inputPostDetail(){
+        PostDto postDto = INPUT.post();
+        validateName(postDto.getName());
+        return postDto;
+    }
+    public void validateName(String name){
+        if(contents.isExist(name)){
+            throw new DuplicateNameException();
+        }
+    }
+
+    public CategoryDto inputCategoryDetail(){
+        CategoryDto categoryDto = INPUT.category();
+        validateName(categoryDto.getName());
+        return categoryDto;
+    }
+    public <T> boolean save(T dto, CategoryDto parentCategoryDto) {
+        String categoryName = parentCategoryDto.getName();
+        if (dto.getClass().equals(PostDto.class)) {
+            Post content = PostDto.toEntity((PostDto) dto, user);
+            return contents.findAndAdd(content, categoryName);
+        }
+        Category content = CategoryDto.toEntity((CategoryDto)dto);
+        return contents.findAndAdd(content, categoryName);
+    }
+
+
+    private void show() {
         CategoryDto categoryDto = CategoryDto.from(contents);
         OUTPUT.content(categoryDto);
-        for (Content content : contents.getChild()) {
-            if (ContentType.valueOf(content).equals(ContentType.CATEGORY)) {
-                show((Category) content);
-            }
-        }
     }
 
-    public void lookUp() throws IOException {
-        String title = INPUT.findPost();
+    public void lookUp() {
+        String title = repeatLogic(this::isPostTitle);
         Post found = (Post) contents.find(title);
         PostDto foundDto = Post.toDto(found);
         OUTPUT.post(foundDto);
     }
 
-    public void rename() throws IOException {
+
+
+    public boolean rename() {
         Rename rename = INPUT.rename();
-        contents.findAndRename(rename);
+        return contents.findAndRename(rename);
     }
 
-    public void delete() throws IOException {
+    public boolean delete() {
         String name = INPUT.delete();
-        contents.findAndRemove(name);
+        return contents.findAndRemove(name);
     }
+
+    public String isPostTitle(){
+        String title = INPUT.findPost();
+        if (contents.find(title).getClass().equals(Category.class)) {
+            throw new IllegalContentTypeException();
+        }
+        return title;
+    }
+
+    private <T> T repeatLogic(Supplier<T> inputSupplier) {
+        try {
+            return inputSupplier.get();
+        } catch (NotFoundException e) {
+            OUTPUT.exception(e.getMessage());
+            return repeatLogic(inputSupplier);
+        } catch (IllegalContentTypeException e){
+            OUTPUT.exception(e.getMessage());
+            return repeatLogic(inputSupplier);
+        } catch (DuplicateNameException e){
+            OUTPUT.exception(e.getMessage());
+            return repeatLogic(inputSupplier);
+        }
+    }
+
 
 }
