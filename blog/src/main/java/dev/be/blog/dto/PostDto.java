@@ -9,9 +9,16 @@ public class PostDto {
 
     private final String title;
     private final String text;
+
+
+
     private final String updatedDate;
     private final String createdDate;
     private final String user;
+
+    public String getName() {
+        return title;
+    }
 
     public PostDto(String title, String text){
         this.title = title;
@@ -40,12 +47,17 @@ public class PostDto {
 
     @Override
     public String toString() {
-        return "PostDto{" +
-                "title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                ", updatedDate='" + updatedDate + '\'' +
-                ", createdDate='" + createdDate + '\'' +
-                ", user='" + user + '\'' +
-                '}';
+        return '\n' + "  <Post>" +
+                '\n' +
+                " title = '" + title + '\'' +
+                '\n' +
+                " text = '" + text + '\'' +
+                '\n' +
+                " updatedDate = '" + updatedDate + '\'' +
+                '\n' +
+                " createdDate = '" + createdDate + '\'' +
+                '\n' +
+                " user = '" + user + '\'' +
+                '\n';
     }
 }
