@@ -1,6 +1,6 @@
 package dev.be.blog.dto;
 
-import dev.be.blog.domain.ContentType;
+import dev.be.blog.constant.ContentType;
 
 public class ContentDto {
     private ContentType contentType;
