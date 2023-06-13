@@ -9,6 +9,8 @@ import dev.be.blog.exception.IllegalContentTypeException;
 import dev.be.blog.exception.NotFoundException;
 import dev.be.blog.view.InputView;
 import dev.be.blog.view.OutputView;
+import dev.be.blog.vo.ContentVo;
+import dev.be.blog.vo.Rename;
 
 import java.util.function.Supplier;
 
@@ -58,20 +60,20 @@ public class BlogController {
         }
     }
 
-    public ContentDto createContent() {
+    public ContentVo createContent() {
         ContentType contentType = INPUT.selectContentType();
         CategoryDto parentCategoryDto = INPUT.selectCategory();
-        return new ContentDto(contentType, parentCategoryDto);
+        return new ContentVo(contentType, parentCategoryDto);
     }
 
     public boolean write() {
-        ContentDto contentDto = createContent();
-        if (ContentType.isPost(contentDto.getContentType())) {
+        ContentVo contentVo = createContent();
+        if (ContentType.isPost(contentVo.getContentType())) {
             PostDto postDto = inputPostDetail();
-            return save(postDto, contentDto.getCategoryDto());
-        } else if (ContentType.isCategory(contentDto.getContentType())) {
+            return save(postDto, contentVo.getCategoryDto());
+        } else if (ContentType.isCategory(contentVo.getContentType())) {
             CategoryDto childCategoryDto = inputCategoryDetail();
-            return save(childCategoryDto, contentDto.getCategoryDto());
+            return save(childCategoryDto, contentVo.getCategoryDto());
         }
         throw new IllegalContentTypeException();
     }
@@ -106,14 +108,14 @@ public class BlogController {
 
 
     private void show() {
-        CategoryDto categoryDto = CategoryDto.from(contents);
+        CategoryDto categoryDto = CategoryDto.fromEntity(contents);
         OUTPUT.content(categoryDto);
     }
 
     public void lookUp() {
         String title = repeatLogic(this::isPostTitle);
         Post found = (Post) contents.find(title);
-        PostDto foundDto = Post.toDto(found);
+        PostDto foundDto = PostDto.fromEntity(found);
         OUTPUT.post(foundDto);
     }
 

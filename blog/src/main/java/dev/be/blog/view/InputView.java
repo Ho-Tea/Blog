@@ -5,7 +5,7 @@ import dev.be.blog.constant.Blog;
 import dev.be.blog.constant.ContentType;
 import dev.be.blog.dto.CategoryDto;
 import dev.be.blog.dto.PostDto;
-import dev.be.blog.dto.Rename;
+import dev.be.blog.vo.Rename;
 import dev.be.blog.dto.UserDto;
 import dev.be.blog.exception.IllegalCommandException;
 

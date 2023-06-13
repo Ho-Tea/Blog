@@ -1,7 +1,6 @@
 package dev.be.blog.domain;
 
-import dev.be.blog.dto.Rename;
-import dev.be.blog.exception.DuplicateNameException;
+import dev.be.blog.vo.Rename;
 import dev.be.blog.exception.NotFoundException;
 
 import java.util.ArrayList;
