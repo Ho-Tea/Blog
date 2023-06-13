@@ -35,9 +35,10 @@ public class CategoryDto {
 
     @Override
     public String toString() {
-        return "CategoryDto{" +
-                "name='" + name + '\'' +
-                ", contents=" + contents +
-                '}';
+        return '\n' + "CategoryMain : " +
+                '\n' +
+                '\t' + "name = '" + name + '\'' +
+                '\n' +
+                '\t' + "contents = " + contents;
     }
 }
