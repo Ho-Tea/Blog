@@ -45,7 +45,6 @@ public class BlogController {
         contents = Category.create(user.getNickname());
     }
 
-
     private void loading() {
         if (Blog.ofWrite()) {
             repeatLogic(this::write);
@@ -139,16 +138,10 @@ public class BlogController {
         return title;
     }
 
-    private <T> T repeatLogic(Supplier<T> inputSupplier) {
+    public  <T> T repeatLogic(Supplier<T> inputSupplier) {
         try {
             return inputSupplier.get();
-        } catch (NotFoundException e) {
-            OUTPUT.exception(e.getMessage());
-            return repeatLogic(inputSupplier);
-        } catch (IllegalContentTypeException e){
-            OUTPUT.exception(e.getMessage());
-            return repeatLogic(inputSupplier);
-        } catch (DuplicateNameException e){
+        } catch (RuntimeException e) {
             OUTPUT.exception(e.getMessage());
             return repeatLogic(inputSupplier);
         }
