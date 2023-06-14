@@ -25,4 +25,52 @@
     - 상속보다는 조합을 사용하자
 
 
+### 06/02
+  - Optional
+    - 언제 Optional을 사용할까?
+
+### 06/04 ~ 05
+  - public(private) static final
+
+
+### 06/06 ~ 07
+  - DTO
+    - DTO의 사용범위
+    - DTO vs VO vs Entity
+    - DTO를 사용했을 때의 이점
+
+
+### 06/08
+  - Scanner vs BufferedReader
+    - try-with-resources
+
+
+### 06/09
+  - CustomException
+
+### 06/10
+  - Enum
+    - instance of
+
+
+### 06/11
+  - 함수형 인터페이스
+    - Stream
+    - interface default & static method
+    - 생성자 레퍼런스와 메서드 레퍼런스
+    - 제네릭
+
+
+### 06/12
+  - AssertJ vs JUnit
+    - AssertJ
+    - JUnit
+
+
+### 06/13
+  - 방어적 복사
+    - Arrays.asList()와 List.of() 차이
+
+
+
 
