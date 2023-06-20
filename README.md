@@ -74,3 +74,5 @@
 
 
 
+### 06/16
+  - Git reset vs revert
