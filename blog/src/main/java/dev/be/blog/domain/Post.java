@@ -18,7 +18,10 @@ public class Post implements Content {
         return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(currentTimestamp);
     }
 
-
+    @Override
+    public String getName() {
+        return title;
+    }
     public String getUser() {
         return user.getNickname();
     }
@@ -40,11 +43,6 @@ public class Post implements Content {
         this.title = name;
         this.updatedDate = calculateTime();
         return true;
-    }
-
-    @Override
-    public String getName() {
-        return title;
     }
 
 
