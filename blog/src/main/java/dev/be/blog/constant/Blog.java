@@ -23,27 +23,27 @@ public enum Blog {
     }
 
 
-    public static boolean of() {
+    public static boolean is() {
         return status.equals(Blog.MAIN);
     }
 
-    public static boolean ofWrite() {
+    public static boolean isWrite() {
         return status.equals(Blog.WRITE);
     }
 
-    public static boolean ofUpdate() {
+    public static boolean isUpdate() {
         return status.equals(Blog.UPDATE);
     }
 
-    public static boolean ofDelete() {
+    public static boolean isDelete() {
         return status.equals(Blog.DELETE);
     }
 
-    public static boolean ofLookUp() {
+    public static boolean isLookUp() {
         return status.equals(Blog.LOOKUP);
     }
 
-    public static boolean ofClose() {
+    public static boolean isClose() {
         return status.equals(Blog.EXIT);
     }
 

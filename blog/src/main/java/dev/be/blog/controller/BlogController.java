@@ -32,7 +32,7 @@ public class BlogController {
     }
 
     public void run() {
-        while (!Blog.ofClose()) {
+        while (!Blog.isClose()) {
             inputCommand();
             loading();
         }
@@ -47,15 +47,15 @@ public class BlogController {
 
 
     private void loading() {
-        if (Blog.ofWrite()) {
+        if (Blog.isWrite()) {
             repeatLogic(this::write);
-        } else if (Blog.ofUpdate()) {
+        } else if (Blog.isUpdate()) {
             repeatLogic(this::rename);
-        } else if (Blog.ofDelete()) {
+        } else if (Blog.isDelete()) {
             repeatLogic(this::delete);
-        } else if (Blog.ofLookUp()) {
+        } else if (Blog.isLookUp()) {
             lookUp();
-        } else if (Blog.of()) {
+        } else if (Blog.is()) {
             show();
         }
     }
