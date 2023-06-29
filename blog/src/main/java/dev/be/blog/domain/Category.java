@@ -36,12 +36,12 @@ public class Category implements Content {
         return Collections.unmodifiableList(contents);
     }
 
-    public Content find(String categoryName) {
+    public Content find(String contentName) {
         for (Content content : contents) {
-            if (content.getName().equals(categoryName)) {
+            if (content.getName().equals(contentName)) {
                 return content;
             } else if (content.getClass().equals(Category.class)) {
-                return ((Category) content).find(categoryName);
+                return ((Category) content).find(contentName);
             }
         }
         throw new NotFoundException();
