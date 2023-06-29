@@ -76,7 +76,7 @@ public class InputView {
             System.out.println("카테고리를 생성하려면 1, 포스팅을 작성하려면 2를 입력해주세요");
             String number = READER.readLine();
             System.out.println(CONTOUR);
-            return ContentType.valueOf(Integer.parseInt(number));
+            return ContentType.match(Integer.parseInt(number));
         }catch (IOException e){
             e.printStackTrace();
             return selectContentType();

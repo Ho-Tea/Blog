@@ -15,7 +15,7 @@ public enum ContentType {
     }
 
 
-    public static ContentType valueOf(int number) {
+    public static ContentType match(int number) {
         return Arrays.stream(ContentType.values())
                 .filter(o -> o.number == number)
                 .findFirst()
@@ -23,12 +23,12 @@ public enum ContentType {
 
     }
 
-    public static boolean isCategory(ContentType contentType){
-        return contentType.equals(ContentType.CATEGORY);
+    public boolean isCategory(){
+        return this.equals(ContentType.CATEGORY);
     }
 
-    public static boolean isPost(ContentType contentType){
-        return contentType.equals(ContentType.POST);
+    public boolean isPost(){
+        return this.equals(ContentType.POST);
     }
 
 
