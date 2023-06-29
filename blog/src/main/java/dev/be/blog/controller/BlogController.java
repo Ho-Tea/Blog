@@ -20,6 +20,7 @@ public class BlogController {
     private static final OutputView OUTPUT = new OutputView();
     private User user;
     private Category contents;
+    private Blog blogStatus;
 
     public BlogController(){
         UserDto userDto = INPUT.enrollUser();   // 회원등록하는 과정에서의 예외는 우선 보류한다
@@ -38,6 +39,7 @@ public class BlogController {
         }
     }
 
+
     public void inputCommand() {
         OUTPUT.commandType();
         INPUT.command();
@@ -55,7 +57,7 @@ public class BlogController {
             repeatLogic(this::delete);
         } else if (Blog.isLookUp()) {
             lookUp();
-        } else if (Blog.is()) {
+        } else if (Blog.isMain()) {
             show();
         }
     }
