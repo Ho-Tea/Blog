@@ -21,10 +21,14 @@ public class BlogController {
     private User user;
     private Category contents;
 
-
-    public void init() {
+    public BlogController(){
         UserDto userDto = INPUT.enrollUser();   // 회원등록하는 과정에서의 예외는 우선 보류한다
         createBlogByUserName(userDto);
+    }
+
+    public void createBlogByUserName(UserDto userDto) {
+        user = UserDto.toEntity(userDto);
+        contents = Category.create(user.getNickname());
     }
 
     public void run() {
@@ -40,10 +44,7 @@ public class BlogController {
     }
 
 
-    public void createBlogByUserName(UserDto userDto) {
-        user = UserDto.toEntity(userDto);
-        contents = Category.create(user.getNickname());
-    }
+
 
     private void loading() {
         if (Blog.ofWrite()) {
