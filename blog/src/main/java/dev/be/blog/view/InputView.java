@@ -130,21 +130,17 @@ public class InputView {
         }
     }
 
-    public void command() {
+    public int command() {
         try {
             System.out.println("실행 하고자 하는 행동의 번호를 입력해주세요");
             String option = READER.readLine();
             System.out.println(CONTOUR);
-            Blog.transfer(Integer.parseInt(option));
+            return Integer.parseInt(option);
         }catch (IOException e){
             e.printStackTrace();
             command();
-        }catch (IllegalCommandException e){ // 이거는 여기서 실행
-            System.out.println(e.getMessage());
-            command();
         }
-
-
+        throw new IllegalCommandException();
     }
 
 

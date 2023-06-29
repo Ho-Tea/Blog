@@ -45,11 +45,11 @@ public enum Blog {
         return blog.equals(EXIT);
     }
 
-    public static Blog transfer(int commandNumber) {
+    public static Blog match(int commandNumber) {
         return Arrays.stream(Blog.values()).filter(o -> o.commandNumber == commandNumber)
                 .findFirst()
                 .orElseThrow(() -> new IllegalCommandException());
     }
-    
+
 
 }
