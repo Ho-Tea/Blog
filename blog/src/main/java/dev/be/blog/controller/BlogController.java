@@ -6,10 +6,9 @@ import dev.be.blog.domain.*;
 import dev.be.blog.dto.*;
 import dev.be.blog.exception.DuplicateNameException;
 import dev.be.blog.exception.IllegalContentTypeException;
-import dev.be.blog.exception.NotFoundException;
 import dev.be.blog.view.InputView;
 import dev.be.blog.view.OutputView;
-import dev.be.blog.vo.ContentVo;
+import dev.be.blog.dto.ContentDto;
 import dev.be.blog.vo.Rename;
 
 import java.util.function.Supplier;
@@ -33,7 +32,7 @@ public class BlogController {
     }
 
     public void run() {
-        while (!Blog.isClose()) {
+        while (!Blog.isClose(blog)) {
             inputCommand();
             loading();
         }
@@ -51,33 +50,34 @@ public class BlogController {
 
 
     private void loading() {
-        if (Blog.isWrite()) {
+        if (Blog.isWrite(blog)) {
             repeatLogic(this::write);
-        } else if (Blog.isUpdate()) {
+        } else if (Blog.isUpdate(blog)) {
             repeatLogic(this::rename);
-        } else if (Blog.isDelete()) {
+        } else if (Blog.isDelete(blog)) {
             repeatLogic(this::delete);
-        } else if (Blog.isLookUp()) {
+        } else if (Blog.isLookUp(blog)) {
             lookUp();
-        } else if (Blog.isMain()) {
+        } else if (Blog.isMain(blog)) {
             show();
         }
     }
 
-    public ContentVo createContent() {
+    public ContentDto createContent() {
         ContentType contentType = INPUT.selectContentType();
         CategoryDto parentCategoryDto = INPUT.selectCategory();
-        return new ContentVo(contentType, parentCategoryDto);
+        return new ContentDto(contentType, parentCategoryDto);
     }
 
     public boolean write() {
-        ContentVo contentVo = createContent();
-        if (ContentType.isPost(contentVo.getContentType())) {
+        ContentDto contentDto = createContent();
+        ContentType contentType = contentDto.getContentType();
+        if (contentType.isPost()) {
             PostDto postDto = inputPostDetail();
-            return save(postDto, contentVo.getCategoryDto());
-        } else if (ContentType.isCategory(contentVo.getContentType())) {
+            return save(postDto, contentDto.getCategoryDto());
+        } else if (contentType.isCategory()){
             CategoryDto childCategoryDto = inputCategoryDetail();
-            return save(childCategoryDto, contentVo.getCategoryDto());
+            return save(childCategoryDto, contentDto.getCategoryDto());
         }
         throw new IllegalContentTypeException();
     }
