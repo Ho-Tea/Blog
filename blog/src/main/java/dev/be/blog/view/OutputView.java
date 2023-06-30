@@ -20,7 +20,7 @@ public class OutputView {
     public void commandType(){
         System.out.println("======================");
         System.out.println();
-        for(Blog blog : Blog.command()){
+        for(Blog blog : Blog.values()){
             System.out.println(blog.ordinal() + " : " + blog);
         }
         System.out.println();
