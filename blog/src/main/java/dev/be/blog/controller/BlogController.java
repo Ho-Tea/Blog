@@ -46,19 +46,36 @@ public class BlogController {
 
 
 
-
-
-
     private void loading() {
-        if (Blog.isWrite(blog)) {
+        judgeWrite();
+        judgeUpdate();
+        judgeDelete();
+        judgeLookUp();
+        judgeMain();
+    }
+
+    private void judgeWrite(){
+        if (Blog.isWrite(blog)){
             repeatLogic(this::write);
-        } else if (Blog.isUpdate(blog)) {
+        }
+    }
+    private void judgeUpdate(){
+        if (Blog.isUpdate(blog)){
             repeatLogic(this::rename);
-        } else if (Blog.isDelete(blog)) {
+        }
+    }
+    private void judgeDelete(){
+        if (Blog.isDelete(blog)){
             repeatLogic(this::delete);
-        } else if (Blog.isLookUp(blog)) {
+        }
+    }
+    private void judgeLookUp(){
+        if (Blog.isLookUp(blog)){
             lookUp();
-        } else if (Blog.isMain(blog)) {
+        }
+    }
+    private void judgeMain(){
+        if (Blog.isMain(blog)){
             show();
         }
     }
