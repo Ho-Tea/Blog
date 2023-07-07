@@ -97,7 +97,7 @@ public class Category implements Content {
     }
 
 
-    public boolean add(Content content) {
+    protected boolean add(Content content) {
         return contents.add(content);
     }
 

@@ -22,11 +22,11 @@ public class BlogController {
     private Blog blog;
 
     public BlogController(){
-        UserDto userDto = INPUT.enrollUser();   // 회원등록하는 과정에서의 예외는 우선 보류한다
+        UserDto userDto = INPUT.enrollUser();
         createBlogByUserName(userDto);
     }
 
-    public void createBlogByUserName(UserDto userDto) {
+    protected void createBlogByUserName(UserDto userDto) {
         user = UserDto.toEntity(userDto);
         contents = Category.create(user.getNickname());
     }
@@ -34,7 +34,7 @@ public class BlogController {
     public void run() {
         while (!blog.isExit()) {
             inputCommand();
-            loading();
+            loadCommand();
         }
     }
 
@@ -46,12 +46,12 @@ public class BlogController {
 
 
 
-    private void loading() {
+    private void loadCommand() {
         judgeWrite();
         judgeUpdate();
         judgeDelete();
-        judgeLookUp();
-        judgeMain();
+        judgeRead();
+        judgeDefault();
     }
 
     private void judgeWrite(){
@@ -69,24 +69,24 @@ public class BlogController {
             repeatLogic(this::delete);
         }
     }
-    private void judgeLookUp(){
+    private void judgeRead(){
         if (blog.isRead()){
-            lookUp();
+            read();
         }
     }
-    private void judgeMain(){
+    private void judgeDefault(){
         if (blog.isDefault()){
             show();
         }
     }
 
-    public ContentDto createContent() {
+    private ContentDto createContent() {
         ContentType contentType = INPUT.selectContentType();
         CategoryDto parentCategoryDto = INPUT.selectCategory();
         return new ContentDto(contentType, parentCategoryDto);
     }
 
-    public boolean write() {
+    private boolean write() {
         ContentDto contentDto = createContent();
         ContentType contentType = contentDto.getContentType();
         if (contentType.isPost()) {
@@ -101,23 +101,23 @@ public class BlogController {
 
 
 
-    public PostDto inputPostDetail(){
+    private PostDto inputPostDetail(){
         PostDto postDto = INPUT.post();
         validateName(postDto.getName());
         return postDto;
     }
-    public void validateName(String name){
+    protected void validateName(String name){
         if(contents.isExist(name)){
             throw new DuplicateNameException();
         }
     }
 
-    public CategoryDto inputCategoryDetail(){
+    private CategoryDto inputCategoryDetail(){
         CategoryDto categoryDto = INPUT.category();
         validateName(categoryDto.getName());
         return categoryDto;
     }
-    public <T> boolean save(T dto, CategoryDto parentCategoryDto) {
+    protected  <T> boolean save(T dto, CategoryDto parentCategoryDto) {
         String categoryName = parentCategoryDto.getName();
         if (dto.getClass().equals(PostDto.class)) {
             Post content = PostDto.toEntity((PostDto) dto, user);
@@ -133,7 +133,7 @@ public class BlogController {
         OUTPUT.content(categoryDto);
     }
 
-    public void lookUp() {
+    private void read() {
         String title = repeatLogic(this::isPostTitle);
         Post found = (Post) contents.find(title);
         PostDto foundDto = PostDto.fromEntity(found);
@@ -142,17 +142,17 @@ public class BlogController {
 
 
 
-    public boolean rename() {
+    private boolean rename() {
         Rename rename = INPUT.rename();
         return contents.findAndRename(rename);
     }
 
-    public boolean delete() {
+    private boolean delete() {
         String name = INPUT.delete();
         return contents.findAndRemove(name);
     }
 
-    public String isPostTitle(){
+    private String isPostTitle(){
         String title = INPUT.findPost();
         if (contents.find(title).getClass().equals(Category.class)) {
             throw new IllegalContentTypeException();
@@ -160,7 +160,7 @@ public class BlogController {
         return title;
     }
 
-    public  <T> T repeatLogic(Supplier<T> inputSupplier) {
+    private  <T> T repeatLogic(Supplier<T> inputSupplier) {
         try {
             return inputSupplier.get();
         } catch (RuntimeException e) {
