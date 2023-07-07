@@ -8,16 +8,16 @@ public enum ContentType {
     CATEGORY(1),
     POST(2);
 
-    private int number;
+    private int contentNumber;
 
-    ContentType(int number) {
-        this.number = number;
+    ContentType(int contentNumber) {
+        this.contentNumber = contentNumber;
     }
 
 
-    public static ContentType match(int number) {
+    public static ContentType match(int contentNumber) {
         return Arrays.stream(ContentType.values())
-                .filter(o -> o.number == number)
+                .filter(o -> o.contentNumber == contentNumber)
                 .findFirst()
                 .orElseThrow(() -> new IllegalCommandException());
 
