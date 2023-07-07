@@ -1,13 +1,17 @@
 package dev.be.blog;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import dev.be.blog.controller.BlogController;
+import dev.be.blog.domain.*;
 
-@SpringBootApplication
+import java.io.IOException;
+
+//@SpringBootApplication
 public class BlogApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BlogApplication.class, args);
-    }
+    public static void main(String[] args) throws InterruptedException, IOException {
+//        SpringApplication.run(BlogApplication.class, args);
+        BlogController blog = new BlogController();
+        blog.run();
 
+    }
 }
