@@ -6,11 +6,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Blog {
-    MAIN(1),
+    DEFAULT(1),
     WRITE(2),
     UPDATE(3),
     DELETE(4),
-    LOOKUP(5),
+    READ(5),
     EXIT(6);
 
 
@@ -21,31 +21,31 @@ public enum Blog {
     }
 
 
-    public static boolean isMain(Blog blog) {
-        return blog.equals(MAIN);
+    public boolean isDefault() {
+        return this.equals(DEFAULT);
     }
 
-    public static boolean isWrite(Blog blog) {
-        return blog.equals(WRITE);
+    public boolean isWrite() {
+        return this.equals(WRITE);
     }
 
-    public static boolean isUpdate(Blog blog) {
-        return blog.equals(UPDATE);
+    public boolean isUpdate() {
+        return this.equals(UPDATE);
     }
 
-    public static boolean isDelete(Blog blog) {
-        return blog.equals(DELETE);
+    public boolean isDelete() {
+        return this.equals(DELETE);
     }
 
-    public static boolean isLookUp(Blog blog) {
-        return blog.equals(LOOKUP);
+    public boolean isRead() {
+        return this.equals(READ);
     }
 
-    public static boolean isClose(Blog blog) {
-        return blog.equals(EXIT);
+    public boolean isExit() {
+        return this.equals(EXIT);
     }
 
-    public static Blog match(int commandNumber) {
+    public Blog match(int commandNumber) {
         return Arrays.stream(Blog.values()).filter(o -> o.commandNumber == commandNumber)
                 .findFirst()
                 .orElseThrow(() -> new IllegalCommandException());

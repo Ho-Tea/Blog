@@ -32,7 +32,7 @@ public class BlogController {
     }
 
     public void run() {
-        while (!Blog.isClose(blog)) {
+        while (!blog.isExit()) {
             inputCommand();
             loading();
         }
@@ -41,7 +41,7 @@ public class BlogController {
 
     public void inputCommand() {
         OUTPUT.commandType();
-        blog = Blog.match(INPUT.command());
+        blog = blog.match(INPUT.command());
     }
 
 
@@ -55,27 +55,27 @@ public class BlogController {
     }
 
     private void judgeWrite(){
-        if (Blog.isWrite(blog)){
+        if (blog.isWrite()){
             repeatLogic(this::write);
         }
     }
     private void judgeUpdate(){
-        if (Blog.isUpdate(blog)){
+        if (blog.isUpdate()){
             repeatLogic(this::rename);
         }
     }
     private void judgeDelete(){
-        if (Blog.isDelete(blog)){
+        if (blog.isDelete()){
             repeatLogic(this::delete);
         }
     }
     private void judgeLookUp(){
-        if (Blog.isLookUp(blog)){
+        if (blog.isRead()){
             lookUp();
         }
     }
     private void judgeMain(){
-        if (Blog.isMain(blog)){
+        if (blog.isDefault()){
             show();
         }
     }
