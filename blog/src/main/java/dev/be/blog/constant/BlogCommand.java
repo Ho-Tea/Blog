@@ -5,7 +5,7 @@ import dev.be.blog.exception.IllegalCommandException;
 import java.util.Arrays;
 import java.util.List;
 
-public enum Blog {
+public enum BlogCommand {
     DEFAULT(1),
     WRITE(2),
     UPDATE(3),
@@ -16,7 +16,7 @@ public enum Blog {
 
     private int commandNumber;
 
-    Blog(int commandNumber) {
+    BlogCommand(int commandNumber) {
         this.commandNumber = commandNumber;
     }
 
@@ -45,11 +45,10 @@ public enum Blog {
         return this.equals(EXIT);
     }
 
-    public Blog match(int commandNumber) {
-        return Arrays.stream(Blog.values()).filter(o -> o.commandNumber == commandNumber)
+    public BlogCommand match(int commandNumber) {
+        return Arrays.stream(BlogCommand.values()).filter(o -> o.commandNumber == commandNumber)
                 .findFirst()
                 .orElseThrow(() -> new IllegalCommandException());
     }
-
 
 }
