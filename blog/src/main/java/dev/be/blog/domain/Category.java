@@ -1,7 +1,7 @@
 package dev.be.blog.domain;
 
-import dev.be.blog.vo.Rename;
 import dev.be.blog.exception.NotFoundException;
+import dev.be.blog.vo.Rename;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,16 +60,16 @@ public class Category implements Content {
         return Objects.hash(name, contents);
     }
 
-    public boolean findAndAdd(Post post, String categoryName) {
-        if(categoryName.equals(this.name)){
+    public boolean add(Post post, String categoryName) {
+        if (categoryName.equals(this.name)) {
             return add(post);
         }
         Category found = (Category) find(categoryName);
         return found.add(post);
     }
 
-    public boolean findAndAdd(Category childCategory, String categoryName) {
-        if(categoryName.equals(this.name)){
+    public boolean add(Category childCategory, String categoryName) {
+        if (categoryName.equals(this.name)) {
             return add(childCategory);
         }
         Category found = (Category) find(categoryName);
@@ -77,20 +77,20 @@ public class Category implements Content {
 
     }
 
-    public boolean findAndRename(Rename rename) {
-        if(rename.getOldName().equals(this.name)){
+    public boolean rename(Rename rename) {
+        if (rename.getOldName().equals(this.name)) {
             return rename(rename.getNewName());
         }
         Content found = find(rename.getOldName());
         return found.rename(rename.getNewName());
     }
 
-    public boolean findAndRemove(String name) {
+    public boolean remove(String name) {
         for (Content content : contents) {
             if (content.getName().equals(name)) {
                 return remove(content);
             } else if (content.getClass().equals(Category.class)) {
-                return ((Category) content).findAndRemove(name);
+                return ((Category) content).remove(name);
             }
         }
         throw new NotFoundException();
@@ -104,15 +104,14 @@ public class Category implements Content {
 
     public boolean isExist(String contentName) {
         boolean exists = false;
-        if(this.name.equals(contentName)){
+        if (this.name.equals(contentName)) {
             return true;
         }
         for (Content content : contents) {
             if (content.getName().equals(contentName) || name.equals(contentName)) {
                 exists = true;
                 break;
-            }
-            else if (content.getClass().equals(Category.class)) {
+            } else if (content.getClass().equals(Category.class)) {
                 exists = ((Category) content).isExist(contentName);
             }
         }
