@@ -23,12 +23,8 @@ public enum ContentType {
 
     }
 
-    public boolean isCategory(){
-        return this.equals(ContentType.CATEGORY);
-    }
-
-    public boolean isPost(){
-        return this.equals(ContentType.POST);
+    public boolean is(ContentType contentType) {
+        return this.equals(contentType);
     }
 
 
