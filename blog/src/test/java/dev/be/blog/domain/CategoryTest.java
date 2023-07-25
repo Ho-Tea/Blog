@@ -18,12 +18,12 @@ class CategoryTest {
 
     @BeforeEach
     void setUp() {
-        User user = User.create("윤주호", "Test", 26, "dbswn990@gmail.com");
+        user = User.create("윤주호", "Test", 26, "dbswn990@gmail.com");
         parentCategory = Category.create("Test");
         childCategory = Category.create("Inner-Test");
         post = Post.builder().title("test-title").text("testing").user(user).build();
         parentCategory.add(childCategory);
-        parentCategory.findAndAdd(post, childCategory.getName());
+        parentCategory.add(post, childCategory.getName());
 
     }   // 간단한 폴더구조 생성
 
@@ -39,7 +39,7 @@ class CategoryTest {
     @DisplayName("카테고리의 이름을 변경할 수 있어야 한다")
     void updateCategory(){
         Rename rename = new Rename("Inner-Test", "New-Inner-Test");
-        parentCategory.findAndRename(rename);
+        parentCategory.rename(rename);
         assertThat(childCategory.getName()).isEqualTo(rename.getNewName());
     }
 
@@ -47,7 +47,7 @@ class CategoryTest {
     @DisplayName("포스트의 이름을 변경할 수 있어야 한다")
     void updatePost(){
         Rename rename = new Rename("test-title", "New-test-title");
-        parentCategory.findAndRename(rename);
+        parentCategory.rename(rename);
         assertThat(post.getName()).isEqualTo(rename.getNewName());
     }
 
@@ -55,7 +55,7 @@ class CategoryTest {
     @DisplayName("하위 카테고리를 삭제할 수 있다")
     void deleteCategory(){
         String categoryName = childCategory.getName();
-        parentCategory.findAndRemove(categoryName);
+        parentCategory.remove(categoryName);
         assertThatThrownBy(() -> parentCategory.find(childCategory.getName())).isInstanceOf(NotFoundException.class);
     }
 
@@ -63,7 +63,7 @@ class CategoryTest {
     @DisplayName("하위 포스트를 삭제할 수 있다")
     void deletePost(){
         String postName = post.getName();
-        parentCategory.findAndRemove(postName);
+        parentCategory.remove(postName);
         assertThatThrownBy(() -> parentCategory.find(post.getName())).isInstanceOf(NotFoundException.class);
     }
 
