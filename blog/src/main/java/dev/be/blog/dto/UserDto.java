@@ -31,7 +31,7 @@ public class UserDto {
         this.email = email;
     }
 
-    public static User toEntity(UserDto userDto){
+    public static User toEntity(UserDto userDto) {
         return User.create(userDto.getName(),
                 userDto.getNickname(),
                 userDto.getAge(),

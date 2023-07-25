@@ -1,7 +1,6 @@
 package dev.be.blog;
 
 import dev.be.blog.controller.BlogController;
-import dev.be.blog.domain.*;
 
 import java.io.IOException;
 
