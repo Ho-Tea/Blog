@@ -5,5 +5,8 @@ public interface Content {
 
     String getName();
 
+    default boolean is(Object o) {
+        return this.getClass().equals(o);
+    }
 
 }
