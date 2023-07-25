@@ -9,9 +9,6 @@ public class PostDto {
 
     private final String title;
     private final String text;
-
-
-
     private final String updatedDate;
     private final String createdDate;
     private final String user;
@@ -20,7 +17,7 @@ public class PostDto {
         return title;
     }
 
-    public PostDto(String title, String text){
+    public PostDto(String title, String text) {
         this.title = title;
         this.text = text;
         this.updatedDate = Optional.empty().toString();
@@ -37,7 +34,8 @@ public class PostDto {
         this.user = user;
     }
 
-    public static Post toEntity(PostDto postDto, User user){
+
+    public static Post toEntity(PostDto postDto, User user) {
         return Post.builder()
                 .title(postDto.title)
                 .text(postDto.text)
