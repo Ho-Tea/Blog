@@ -85,7 +85,11 @@
 
 
 ## Level 1
+  > 수정 전
+  <img src = "Level1.png">
 
-  - <img src = "Level1.jpeg">
+  > 수정 후
+  <img src = "Level1.jpeg">
 
-  - <img src = "Level1Logic.jpeg">
+  > Logic
+  <img src = "Level1Logic.jpeg">
