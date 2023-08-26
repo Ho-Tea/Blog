@@ -80,9 +80,12 @@
     - 캡슐화와 은닉화의 차이점
     - 정보 은닉(OOP의 핵심)
 
+### 07/01
+  - CQRS
+
 
 ## Level 1
 
-  - <img src = "Level1.png">
+  - <img src = "Level1.jpeg">
 
   - <img src = "Level1Logic.jpeg">
