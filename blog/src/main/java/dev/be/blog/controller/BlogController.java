@@ -22,7 +22,7 @@ public class BlogController {
     private static final OutputView OUTPUT = new OutputView();
     private User user;
     private Category rootContent;
-    private BlogCommand blogCommand;
+    private BlogCommand blogCommand = BlogCommand.DEFAULT;
     private Map<BlogCommand, Supplier> commandResolveMap;
 
     public BlogController() {
@@ -46,21 +46,21 @@ public class BlogController {
     }
 
     public void run() {
-        while (!blogCommand.isExit()) {
-            inputCommand();
+        while (!(inputCommand().isExit())) {
             loadCommand();
         }
     }
 
 
-    private void inputCommand() {
+    private BlogCommand inputCommand() {
         OUTPUT.commandType(); // 가능한 모든 블로그 관련 행동 출력
         blogCommand = blogCommand.match(INPUT.command()); //블로그 관련 행동 입력 받아 지정
+        return blogCommand;
     }
 
 
-    private void loadCommand() {
-        Supplier commandResolve = commandResolveMap.get(blogCommand);
+    private <T> void loadCommand() {
+        Supplier<T> commandResolve = commandResolveMap.get(blogCommand);
         repeatLogic(commandResolve);
     }
 

@@ -21,7 +21,7 @@ public class OutputView {
         System.out.println("======================");
         System.out.println();
         for (BlogCommand blog : BlogCommand.values()) {
-            System.out.println(blog.ordinal() + " : " + blog);
+            System.out.println(blog.ordinal()+1 + " : " + blog);
         }
         System.out.println();
         System.out.println("======================");
