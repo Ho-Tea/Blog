@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.1.0'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'jacoco'
 }
 
 group = 'dev.be'
@@ -42,4 +43,18 @@ tasks.named('test') {
 }
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked"
+}
+test{
+    finalizedBy jacocoTestReport
+}
+
+jacoco{
+    toolVersion = '0.8.8'
+}
+
+jacocoTestReport{
+    reports {
+        xml.required = true
+        html.required = true
+    }
 }
