@@ -1,12 +1,12 @@
 package dev.be.blog.domain;
 
-import dev.be.blog.vo.Rename;
 import dev.be.blog.exception.NotFoundException;
+import dev.be.blog.vo.Rename;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class CategoryTest {
@@ -37,7 +37,7 @@ class CategoryTest {
 
     @Test
     @DisplayName("카테고리의 이름을 변경할 수 있어야 한다")
-    void updateCategory(){
+    void updateCategory() {
         Rename rename = new Rename("Inner-Test", "New-Inner-Test");
         parentCategory.rename(rename);
         assertThat(childCategory.getName()).isEqualTo(rename.getNewName());
@@ -45,7 +45,7 @@ class CategoryTest {
 
     @Test
     @DisplayName("포스트의 이름을 변경할 수 있어야 한다")
-    void updatePost(){
+    void updatePost() {
         Rename rename = new Rename("test-title", "New-test-title");
         parentCategory.rename(rename);
         assertThat(post.getName()).isEqualTo(rename.getNewName());
@@ -53,7 +53,7 @@ class CategoryTest {
 
     @Test
     @DisplayName("하위 카테고리를 삭제할 수 있다")
-    void deleteCategory(){
+    void deleteCategory() {
         String categoryName = childCategory.getName();
         parentCategory.remove(categoryName);
         assertThatThrownBy(() -> parentCategory.find(childCategory.getName())).isInstanceOf(NotFoundException.class);
@@ -61,7 +61,7 @@ class CategoryTest {
 
     @Test
     @DisplayName("하위 포스트를 삭제할 수 있다")
-    void deletePost(){
+    void deletePost() {
         String postName = post.getName();
         parentCategory.remove(postName);
         assertThatThrownBy(() -> parentCategory.find(post.getName())).isInstanceOf(NotFoundException.class);
@@ -69,12 +69,11 @@ class CategoryTest {
 
     @Test
     @DisplayName("이름으로 해당 컨텐트를 찾을 수 있다")
-    void retrieve(){
+    void retrieve() {
         String postName = post.getName();
         Content content = parentCategory.find(postName);
         assertThat(content).isEqualTo(post);
     }
-
 
 
 }
