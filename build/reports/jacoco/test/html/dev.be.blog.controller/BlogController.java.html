@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BlogController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">blog</a> &gt; <a href="index.source.html" class="el_package">dev.be.blog.controller</a> &gt; <span class="el_source">BlogController.java</span></div><h1>BlogController.java</h1><pre class="source lang-java linenums">package dev.be.blog.controller;
+
+import dev.be.blog.constant.BlogCommand;
+import dev.be.blog.constant.ContentType;
+import dev.be.blog.domain.Category;
+import dev.be.blog.domain.Post;
+import dev.be.blog.domain.User;
+import dev.be.blog.dto.CategoryDto;
+import dev.be.blog.dto.PostDto;
+import dev.be.blog.dto.UserDto;
+import dev.be.blog.exception.DuplicateNameException;
+import dev.be.blog.view.InputView;
+import dev.be.blog.view.OutputView;
+import dev.be.blog.vo.Rename;
+
+import java.util.Map;
+import java.util.function.Supplier;
+
+public class BlogController {
+
+<span class="nc" id="L21">    private static final InputView INPUT = new InputView();</span>
+<span class="nc" id="L22">    private static final OutputView OUTPUT = new OutputView();</span>
+    private User user;
+    private Category rootContent;
+<span class="nc" id="L25">    private BlogCommand blogCommand = BlogCommand.DEFAULT;</span>
+    private Map&lt;BlogCommand, Supplier&gt; commandResolveMap;
+
+<span class="nc" id="L28">    public BlogController() {</span>
+<span class="nc" id="L29">        UserDto userDto = INPUT.enrollUser();</span>
+<span class="nc" id="L30">        user = UserDto.toEntity(userDto);</span>
+<span class="nc" id="L31">        rootContent = Category.create(user.getNickname());</span>
+<span class="nc" id="L32">        saveCommandList();</span>
+<span class="nc" id="L33">    }</span>
+    //-&gt; 테스트가 주가 되어서는 안된다
+    // 테스트용 생성자를 하나 더 만드는 것도 가능하지만 굳이 그렇게해서 테스트를 진행하지는 않겠다
+
+
+    private void saveCommandList() {
+<span class="nc" id="L39">        commandResolveMap = Map.of(</span>
+                BlogCommand.DEFAULT, this::show,
+                BlogCommand.WRITE, this::write,
+                BlogCommand.UPDATE, this::rename,
+                BlogCommand.DELETE, this::delete,
+                BlogCommand.READ, this::read
+        );
+<span class="nc" id="L46">    }</span>
+
+    public void run() {
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        while (!(inputCommand().isExit())) {</span>
+<span class="nc" id="L50">            loadCommand();</span>
+        }
+<span class="nc" id="L52">    }</span>
+
+
+    private BlogCommand inputCommand() {
+<span class="nc" id="L56">        OUTPUT.commandType(); // 가능한 모든 블로그 관련 행동 출력</span>
+<span class="nc" id="L57">        blogCommand = blogCommand.match(INPUT.command()); //블로그 관련 행동 입력 받아 지정</span>
+<span class="nc" id="L58">        return blogCommand;</span>
+    }
+
+
+    private &lt;T&gt; void loadCommand() {
+<span class="nc" id="L63">        Supplier&lt;T&gt; commandResolve = commandResolveMap.get(blogCommand);</span>
+<span class="nc" id="L64">        repeatLogic(commandResolve);</span>
+<span class="nc" id="L65">    }</span>
+
+
+    private boolean write() {
+<span class="nc" id="L69">        ContentType contentType = INPUT.selectContentType();</span>
+<span class="nc" id="L70">        String parentCategoryName = INPUT.selectParentCategory();</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (contentType.is(ContentType.POST)) {</span>
+<span class="nc" id="L72">            PostDto postDto = inputPostDetail();</span>
+<span class="nc" id="L73">            return save(postDto, parentCategoryName);</span>
+        }
+<span class="nc" id="L75">        CategoryDto categoryDto = inputCategoryDetail();</span>
+<span class="nc" id="L76">        return save(categoryDto, parentCategoryName);</span>
+    }
+
+
+    private PostDto inputPostDetail() {
+<span class="nc" id="L81">        PostDto postDto = INPUT.post();</span>
+<span class="nc" id="L82">        validateName(postDto.getName());</span>
+<span class="nc" id="L83">        return postDto;</span>
+    }
+
+    private CategoryDto inputCategoryDetail() {
+<span class="nc" id="L87">        CategoryDto categoryDto = INPUT.category();</span>
+<span class="nc" id="L88">        validateName(categoryDto.getName());</span>
+<span class="nc" id="L89">        return categoryDto;</span>
+    }
+
+    protected void validateName(String name) {
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (rootContent.isExist(name)) {</span>
+<span class="nc" id="L94">            throw new DuplicateNameException();</span>
+        }
+<span class="nc" id="L96">    }</span>
+
+
+    protected boolean save(PostDto dto, String parentCategoryName) {
+<span class="nc" id="L100">        Post content = PostDto.toEntity(dto, user);</span>
+<span class="nc" id="L101">        return rootContent.add(content, parentCategoryName);</span>
+    }
+
+    protected boolean save(CategoryDto dto, String parentCategoryName) {
+<span class="nc" id="L105">        Category content = CategoryDto.toEntity(dto);</span>
+<span class="nc" id="L106">        return rootContent.add(content, parentCategoryName);</span>
+    }
+
+
+    private boolean show() {
+<span class="nc" id="L111">        CategoryDto categoryDto = CategoryDto.fromEntity(rootContent);</span>
+<span class="nc" id="L112">        OUTPUT.content(categoryDto);</span>
+<span class="nc" id="L113">        return true;</span>
+    }
+
+    private boolean read() {
+<span class="nc" id="L117">        String title = INPUT.findPost();</span>
+<span class="nc" id="L118">        Post found = (Post) rootContent.find(title);</span>
+<span class="nc" id="L119">        PostDto foundDto = PostDto.fromEntity(found);</span>
+<span class="nc" id="L120">        OUTPUT.post(foundDto);</span>
+<span class="nc" id="L121">        return true;</span>
+    }
+
+
+    private boolean rename() {
+<span class="nc" id="L126">        Rename rename = INPUT.rename();</span>
+<span class="nc" id="L127">        return rootContent.rename(rename);</span>
+    }
+
+    private boolean delete() {
+<span class="nc" id="L131">        String name = INPUT.delete();</span>
+<span class="nc" id="L132">        return rootContent.remove(name);</span>
+    }
+
+
+    private &lt;T&gt; T repeatLogic(Supplier&lt;T&gt; inputSupplier) {
+        try {
+<span class="nc" id="L138">            return inputSupplier.get();</span>
+<span class="nc" id="L139">        } catch (RuntimeException e) {</span>
+<span class="nc" id="L140">            OUTPUT.exception(e.getMessage());</span>
+<span class="nc" id="L141">            return repeatLogic(inputSupplier);</span>
+        }
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
