@@ -16,7 +16,7 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "boards")
 @Getter
-public class Board extends BaseTimeEntity{
+public class Board extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardId;
@@ -35,7 +35,7 @@ public class Board extends BaseTimeEntity{
         this.user = user;
     }
 
-    public void update(BoardRequest boardRequest){
+    public void update(BoardRequest boardRequest) {
         this.boardName = Objects.requireNonNullElse(boardRequest.getBoardName(), this.boardName);
     }
 }
