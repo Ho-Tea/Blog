@@ -85,6 +85,7 @@ public class PostServiceImpl implements PostService {
         return PostDetailResponse.builder().postId(postId)
                 .title(post.getTitle())
                 .content(post.getContent())
+                .writer(post.getUser().getNickName())
                 .breadCrumbs(getBreadCrumbs(post)).build();
     }
 
