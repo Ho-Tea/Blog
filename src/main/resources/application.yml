@@ -57,7 +57,7 @@ spring:
       on-profile: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://43.201.49.20:3306/board?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://3.39.6.28:3306/board?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: jhyoon
     password: 990220
   jpa:
