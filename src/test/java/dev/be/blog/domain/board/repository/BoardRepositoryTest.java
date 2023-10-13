@@ -3,6 +3,7 @@ package dev.be.blog.domain.board.repository;
 import dev.be.blog.domain.board.entity.Board;
 import dev.be.blog.domain.user.dto.UserAdapter;
 import dev.be.blog.domain.user.entity.Users;
+import dev.be.blog.domain.user.repository.UserRepository;
 import dev.be.blog.global.common.vo.Authority;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,6 +33,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BoardRepositoryTest {
     @Autowired
     private BoardRepository boardRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     private static Board board;
     private static String NAME = "boardName";
@@ -45,6 +48,7 @@ class BoardRepositoryTest {
                 .id(1L)
                 .email("Valid@Valid")
                 .password("12345678")
+                .nickName("TEST")
                 .authority(Authority.ROLE_USER)
                 .build();
     }
@@ -82,8 +86,9 @@ class BoardRepositoryTest {
         int page = 1;
         int size = 3;
         PageRequest pageRequest = PageRequest.of(page, size);
+        userRepository.save(user);
         for(int i = 1 ; i <= 3; i++){
-            boardRepository.save(new Board(Long.valueOf(i), String.valueOf(i), user));
+            boardRepository.save(new Board((long) i, String.valueOf(i), user));
         }
         Page<Board> result = boardRepository.findAllByOrderByBoardIdDesc(pageRequest);
         assertThat(result.getNumber()).isEqualTo(page);
