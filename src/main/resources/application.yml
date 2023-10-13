@@ -31,12 +31,12 @@ spring:
         on-profile: local
     datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: ${DATASOURCE_URL_LOCAL}
-      username: ${DATASOURCE_USERNAME}
-      password: ${DATASOURCE_PASSWORD}
+      url: jdbc:mysql://localhost:3306/board?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+      username: jhyoon
+      password: 990220
     jpa:
       hibernate:
-        ddl-auto: update #create update none
+        ddl-auto: create #create update none
         naming:
           physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       properties:
@@ -53,12 +53,12 @@ spring:
       on-profile: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DATASOURCE_URL}
-    username: ${DATASOURCE_USERNAME}
-    password: ${DATASOURCE_PASSWORD}
+    url: jdbc:mysql://database:3306/board?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: jhyoon
+    password: 990220
   jpa:
     hibernate:
-      ddl-auto: update #create update none
+      ddl-auto: create #create update none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
