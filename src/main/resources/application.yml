@@ -58,7 +58,7 @@ spring:
     password: 990220
   jpa:
     hibernate:
-      ddl-auto: create #create update none
+      ddl-auto: validate #create update none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
