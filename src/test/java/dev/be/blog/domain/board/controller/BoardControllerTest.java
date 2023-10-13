@@ -3,10 +3,7 @@ package dev.be.blog.domain.board.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.be.blog.domain.board.dto.BoardRequest;
 import dev.be.blog.domain.board.dto.BoardResponse;
-import dev.be.blog.domain.board.service.BoardService;
 import dev.be.blog.domain.board.service.BoardServiceImpl;
-import dev.be.blog.domain.user.dto.UserRequest;
-import dev.be.blog.global.common.response.ResponseCode;
 import org.apache.logging.log4j.util.Strings;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -26,14 +23,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.Mockito.when;
 
 @WebMvcTest(BoardController.class)
 @MockBean(JpaMetamodelMappingContext.class)
@@ -95,8 +90,8 @@ class BoardControllerTest {
     void findAll() throws Exception {
         //given
         List<BoardResponse> boardResponses = new ArrayList<>();
-        for(int i = 1 ; i <= 3; i++){
-            BoardResponse boardResponse = new BoardResponse(Long.valueOf(i), String.valueOf(i),"WRITER");
+        for (int i = 1; i <= 3; i++) {
+            BoardResponse boardResponse = new BoardResponse(Long.valueOf(i), String.valueOf(i), "WRITER");
             boardResponses.add(boardResponse);
         }
         Page<BoardResponse> page = new PageImpl<>(boardResponses);
@@ -168,6 +163,7 @@ class BoardControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
     @ParameterizedTest
     @ValueSource(longs = {-1L, 0L})
     @DisplayName("InValid 조건에 맞는 파라미터를 넘기면 보드 삭제에 실패한다 - DTO 검증")
@@ -177,7 +173,6 @@ class BoardControllerTest {
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
-
 
 
 }

@@ -1,11 +1,8 @@
 package dev.be.blog.domain.post.dto;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-import dev.be.blog.domain.post.entity.Post;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
 import java.util.Objects;
 
 @Getter

@@ -42,15 +42,15 @@ tasks.named('test') {
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked"
 }
-test{
+test {
     finalizedBy jacocoTestReport
 }
 
-jacoco{
+jacoco {
     toolVersion = '0.8.8'
 }
 
-jacocoTestReport{
+jacocoTestReport {
     reports {
         xml.required = true
         html.required = true

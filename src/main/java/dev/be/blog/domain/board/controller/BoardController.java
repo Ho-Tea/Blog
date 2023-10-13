@@ -1,7 +1,7 @@
 package dev.be.blog.domain.board.controller;
 
-import dev.be.blog.domain.board.dto.BoardRequest;
 import dev.be.blog.domain.board.dto.BoardListResponse;
+import dev.be.blog.domain.board.dto.BoardRequest;
 import dev.be.blog.domain.board.dto.BoardResponse;
 import dev.be.blog.domain.board.service.BoardService;
 import dev.be.blog.domain.user.dto.UserAdapter;
@@ -38,7 +38,7 @@ public class BoardController {
 
     // 모든 보드 조회
     @GetMapping("/all")
-    public ApiResponse<BoardListResponse> findAll(@PageableDefault(size=5, sort="boardId", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ApiResponse<BoardListResponse> findAll(@PageableDefault(size = 5, sort = "boardId", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<BoardResponse> posts = boardService.findAll(pageable.getPageNumber(), pageable.getPageSize());
         PageInfo pageInfo = new PageInfo(pageable.getPageSize(), pageable.getPageNumber(), posts.getTotalElements(), posts.getTotalPages());
         return ApiResponse.ok(ResponseCode.Normal.RETRIEVE, new BoardListResponse(posts.getContent(), pageInfo));
@@ -54,7 +54,7 @@ public class BoardController {
     @PutMapping("/{boardId}")
     @PreAuthorize("hasAnyRole('USER')")
     public ApiResponse<BoardResponse> update(@PathVariable @Min(1L) Long boardId,
-                                         @Valid @RequestBody BoardRequest boardRequest,
+                                             @Valid @RequestBody BoardRequest boardRequest,
                                              @AuthenticationPrincipal UserAdapter presentUser) {
         return ApiResponse.ok(ResponseCode.Normal.UPDATE, boardService.update(boardId, boardRequest, presentUser));
     }

@@ -15,7 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 내장 데이터베이스를 사용하지 않음
@@ -29,16 +29,17 @@ class PostRepositoryTest {
     private PostRepository postRepository;
 
     @BeforeAll
-    private static void setUp(){
+    private static void setUp() {
         board = Board.builder().boardName("board").build();
         post = Post.builder()
-                    .parentPost(null)
-                    .board(board)
-                    .title("Title")
-                    .content("Content")
-                    .build();
+                .parentPost(null)
+                .board(board)
+                .title("Title")
+                .content("Content")
+                .build();
     }
-    private Post createPost(Long postId,Board board, Post parent){
+
+    private Post createPost(Long postId, Board board, Post parent) {
         return Post.builder()
                 .postId(postId)
                 .parentPost(parent)
@@ -50,7 +51,7 @@ class PostRepositoryTest {
 
     @Test
     @DisplayName("Repository - save 메서드 검증")
-    void save(){
+    void save() {
         Post result = postRepository.save(post);
         assertThat(result.getTitle()).isEqualTo(post.getTitle());
         assertThat(result.getContent()).isEqualTo(post.getContent());
@@ -59,7 +60,7 @@ class PostRepositoryTest {
 
     @Test
     @DisplayName("Repository - findById 메서드 검증")
-    void findById(){
+    void findById() {
         Post newPost = postRepository.save(post);
         Optional<Post> result = postRepository.findById(newPost.getPostId());
         assertThat(result.get().getPostId()).isEqualTo(newPost.getPostId());
@@ -69,13 +70,13 @@ class PostRepositoryTest {
 
     @Test
     @DisplayName("Repository - findAllByOrderByPostIdDesc 메서드 검증")
-    void findAllByOrderByPostIdDesc(){
+    void findAllByOrderByPostIdDesc() {
         int page = 1;
         int size = 3;
         PageRequest pageRequest = PageRequest.of(page, size);
         boardRepository.save(post.getBoard());
-        for(int i = 1 ; i <= 3; i++){
-            postRepository.save(createPost(Long.valueOf(i),board, null));
+        for (int i = 1; i <= 3; i++) {
+            postRepository.save(createPost(Long.valueOf(i), board, null));
         }
         Page<Post> result = postRepository.findAllByOrderByPostIdDesc(pageRequest);
         assertThat(result.getNumber()).isEqualTo(page);
@@ -84,7 +85,7 @@ class PostRepositoryTest {
 
     @Test
     @DisplayName("Repository - deleteById 메서드 검증")
-    void deleteById(){
+    void deleteById() {
         Board newBoard = Board.builder().boardName("NEW_BOARD").build();
         Post result = postRepository.save(createPost(post.getPostId(), newBoard, null));
         postRepository.deleteById(result.getPostId());

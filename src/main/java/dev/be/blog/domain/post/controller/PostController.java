@@ -1,9 +1,6 @@
 package dev.be.blog.domain.post.controller;
 
 
-import dev.be.blog.domain.board.dto.BoardListResponse;
-import dev.be.blog.domain.board.dto.BoardRequest;
-import dev.be.blog.domain.board.dto.BoardResponse;
 import dev.be.blog.domain.post.dto.PostDetailResponse;
 import dev.be.blog.domain.post.dto.PostListResponse;
 import dev.be.blog.domain.post.dto.PostRequest;
@@ -43,7 +40,7 @@ public class PostController {
 
     // 모든 게시물 조회
     @GetMapping("/all")
-    public ApiResponse<PostListResponse> findAll(@PageableDefault(size=5, sort="postId", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ApiResponse<PostListResponse> findAll(@PageableDefault(size = 5, sort = "postId", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<PostResponse> posts = postService.findAll(pageable.getPageNumber(), pageable.getPageSize());
         PageInfo pageInfo = new PageInfo(pageable.getPageSize(), pageable.getPageNumber(), posts.getTotalElements(), posts.getTotalPages());
         return ApiResponse.ok(ResponseCode.Normal.RETRIEVE, new PostListResponse(posts.getContent(), pageInfo));
@@ -59,7 +56,7 @@ public class PostController {
     @PutMapping("/{postId}")
     @PreAuthorize("hasAnyRole('USER')")
     public ApiResponse<PostDetailResponse> update(@PathVariable @Min(1L) Long postId,
-                                             @Valid @RequestBody PostRequest postRequest,
+                                                  @Valid @RequestBody PostRequest postRequest,
                                                   @AuthenticationPrincipal UserAdapter presentUser) {
         return ApiResponse.ok(ResponseCode.Normal.UPDATE, postService.update(postId, postRequest, presentUser));
     }

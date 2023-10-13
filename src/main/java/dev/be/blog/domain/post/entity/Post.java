@@ -19,7 +19,7 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "posts")
 @Getter
-public class Post extends BaseTimeEntity{
+public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
@@ -42,7 +42,7 @@ public class Post extends BaseTimeEntity{
     private Post parentPost;
 
     // 자식 정의
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "parentPost", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentPost", cascade = CascadeType.ALL)
     private List<Post> subPost = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -57,7 +57,7 @@ public class Post extends BaseTimeEntity{
     }
 
     @Builder
-    public Post(Long postId,Users user, @NotNull String title, @NotNull String content, Board board, Post parentPost, List<Post> subPost) {
+    public Post(Long postId, Users user, @NotNull String title, @NotNull String content, Board board, Post parentPost, List<Post> subPost) {
         this.postId = postId;
         this.title = title;
         this.user = user;
@@ -67,11 +67,12 @@ public class Post extends BaseTimeEntity{
         this.subPost = subPost;
     }
 
-    public void update(PostRequest postRequest){
+    public void update(PostRequest postRequest) {
         this.title = postRequest.getTitle();
         this.content = postRequest.getContent();
     }
-    public void changeParent(Post parentPost){
+
+    public void changeParent(Post parentPost) {
         this.parentPost = parentPost;
     }
 }

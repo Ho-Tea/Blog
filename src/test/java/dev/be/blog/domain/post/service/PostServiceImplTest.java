@@ -3,7 +3,6 @@ package dev.be.blog.domain.post.service;
 import dev.be.blog.domain.board.dto.BoardRequest;
 import dev.be.blog.domain.board.entity.Board;
 import dev.be.blog.domain.board.repository.BoardRepository;
-import dev.be.blog.domain.board.service.BoardServiceImpl;
 import dev.be.blog.domain.post.dto.PostRequest;
 import dev.be.blog.domain.post.entity.Post;
 import dev.be.blog.domain.post.repository.PostRepository;
@@ -12,7 +11,6 @@ import dev.be.blog.domain.user.entity.Users;
 import dev.be.blog.global.common.response.ResponseCode;
 import dev.be.blog.global.common.vo.Authority;
 import dev.be.blog.global.exception.GlobalException;
-import org.apache.logging.log4j.util.Strings;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -30,12 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static dev.be.blog.global.common.response.ResponseCode.ErrorCode.*;
+import static dev.be.blog.global.common.response.ResponseCode.ErrorCode.NOT_FOUND_POST;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceImplTest {
@@ -66,7 +62,7 @@ class PostServiceImplTest {
                 .build();
     }
 
-    private Post createPost(Long postId, Post parent){
+    private Post createPost(Long postId, Post parent) {
         return Post.builder()
                 .postId(postId)
                 .parentPost(parent)
@@ -98,7 +94,7 @@ class PostServiceImplTest {
         int size = 3;
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("postId").descending());
         List<Post> posts = new ArrayList<>();
-        for(int i = 1 ; i <= 3; i++){
+        for (int i = 1; i <= 3; i++) {
             posts.add(createPost(Long.valueOf(i), null));
         }
         Page<Post> pages = new PageImpl<>(posts);

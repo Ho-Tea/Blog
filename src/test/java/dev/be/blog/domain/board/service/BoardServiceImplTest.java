@@ -1,7 +1,6 @@
 package dev.be.blog.domain.board.service;
 
 import dev.be.blog.domain.board.dto.BoardRequest;
-import dev.be.blog.domain.board.dto.BoardResponse;
 import dev.be.blog.domain.board.entity.Board;
 import dev.be.blog.domain.board.repository.BoardRepository;
 import dev.be.blog.domain.user.dto.UserAdapter;
@@ -9,7 +8,6 @@ import dev.be.blog.domain.user.entity.Users;
 import dev.be.blog.global.common.response.ResponseCode;
 import dev.be.blog.global.common.vo.Authority;
 import dev.be.blog.global.exception.GlobalException;
-import org.apache.logging.log4j.util.Strings;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -26,14 +23,10 @@ import org.springframework.data.domain.Sort;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static dev.be.blog.global.common.response.ResponseCode.ErrorCode.NOT_FOUND_BOARD;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssumptions.given;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -92,7 +85,7 @@ class BoardServiceImplTest {
         int size = 3;
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("boardId").descending());
         List<Board> boards = new ArrayList<>();
-        for(int i = 1 ; i <= 3; i++){
+        for (int i = 1; i <= 3; i++) {
             boards.add(new Board(Long.valueOf(i), String.valueOf(i), user));
         }
         Page<Board> pages = new PageImpl<>(boards);
@@ -196,8 +189,6 @@ class BoardServiceImplTest {
         assertThrows(GlobalException.class, () -> boardService.delete(boardId, userAdapter));
 
     }
-
-
 
 
 }

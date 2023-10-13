@@ -23,7 +23,7 @@ public class PostRequest {
     @NotNull(message = "내용이 입력되지않았습니다.")
     private String content;
 
-    public static Post toEntity(PostRequest postRequest, Board board, Post parentPost, Users user){
+    public static Post toEntity(PostRequest postRequest, Board board, Post parentPost, Users user) {
         return Post.builder()
                 .user(user)
                 .title(postRequest.getTitle())
@@ -31,7 +31,6 @@ public class PostRequest {
                 .parentPost(parentPost)
                 .board(board).build();
     }
-
 
 
 }

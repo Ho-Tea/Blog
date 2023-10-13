@@ -1,6 +1,5 @@
 package dev.be.blog.domain.post.service;
 
-import dev.be.blog.domain.board.dto.BoardResponse;
 import dev.be.blog.domain.board.entity.Board;
 import dev.be.blog.domain.board.repository.BoardRepository;
 import dev.be.blog.domain.post.dto.PostDetailResponse;
@@ -11,12 +10,10 @@ import dev.be.blog.domain.post.repository.PostRepository;
 import dev.be.blog.domain.user.dto.UserAdapter;
 import dev.be.blog.global.common.response.ResponseCode;
 import dev.be.blog.global.exception.GlobalException;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,21 +94,21 @@ public class PostServiceImpl implements PostService {
         postRepository.delete(post);
     }
 
-    private void checkParentChanged(PostRequest postRequest, Post post){
-        if(!postRequest.getParentId().equals(post.getPostId())){
+    private void checkParentChanged(PostRequest postRequest, Post post) {
+        if (!postRequest.getParentId().equals(post.getPostId())) {
             Post newParent = findPostById(postRequest.getParentId());
             newParent.getSubPost().remove(post);
             post.changeParent(newParent);
         }
     }
 
-    private void validateWriter(Post post, UserAdapter userAdapter, ResponseCode.ErrorCode errorCode){
-        if(!post.getUser().equals(userAdapter.getUser())){
+    private void validateWriter(Post post, UserAdapter userAdapter, ResponseCode.ErrorCode errorCode) {
+        if (!post.getUser().equals(userAdapter.getUser())) {
             throw new GlobalException(errorCode);
         }
     }
 
-    private String getBreadCrumbs(Post post){
+    private String getBreadCrumbs(Post post) {
         Set<Post> breadCrumbs = new HashSet<>();
         bridgeBreadCrumbs(post, breadCrumbs);
         return breadCrumbs.stream()
@@ -120,6 +117,7 @@ public class PostServiceImpl implements PostService {
                 .map(String::valueOf)
                 .collect(Collectors.joining("/"));
     }
+
     private void bridgeBreadCrumbs(Post post, Set<Post> breadCrumbs) {
         breadCrumbs.add(post);
         if (!post.getPostId().equals(post.getParentPost().getPostId())) {
@@ -139,7 +137,7 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new GlobalException(ResponseCode.ErrorCode.NOT_FOUND_BOARD));
     }
 
-    private Page<PostResponse> findAllByPageInfo(PageRequest pageRequest){
+    private Page<PostResponse> findAllByPageInfo(PageRequest pageRequest) {
         return Optional.of(postRepository.findAllByOrderByPostIdDesc(pageRequest).map(PostResponse::from))
                 .orElseThrow(() -> new GlobalException(ResponseCode.ErrorCode.NOT_EXIST_POST));
     }

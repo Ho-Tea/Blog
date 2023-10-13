@@ -1,15 +1,10 @@
 package dev.be.blog.domain.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.be.blog.domain.board.controller.BoardController;
 import dev.be.blog.domain.board.dto.BoardRequest;
-import dev.be.blog.domain.board.dto.BoardResponse;
-import dev.be.blog.domain.board.service.BoardServiceImpl;
 import dev.be.blog.domain.post.dto.PostRequest;
 import dev.be.blog.domain.post.dto.PostResponse;
-import dev.be.blog.domain.post.entity.Post;
 import dev.be.blog.domain.post.service.PostServiceImpl;
-import org.apache.logging.log4j.util.Strings;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,12 +23,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -97,7 +90,7 @@ class PostControllerTest {
     void findAll() throws Exception {
         //given
         List<PostResponse> postResponse = new ArrayList<>();
-        for(int i = 1 ; i <= 3; i++){
+        for (int i = 1; i <= 3; i++) {
             PostResponse boardResponse = new PostResponse(Long.valueOf(i), String.valueOf(i));
             postResponse.add(boardResponse);
         }
@@ -170,6 +163,7 @@ class PostControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
     @ParameterizedTest
     @ValueSource(longs = {-1L, 0L})
     @DisplayName("InValid 조건에 맞는 파라미터를 넘기면 보드 삭제에 실패한다 - DTO 검증")
@@ -179,7 +173,6 @@ class PostControllerTest {
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
-
 
 
 }

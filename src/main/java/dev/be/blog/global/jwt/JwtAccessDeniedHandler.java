@@ -1,6 +1,5 @@
 package dev.be.blog.global.jwt;
 
-import dev.be.blog.global.common.response.ApiResponse;
 import dev.be.blog.global.common.response.ResponseCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

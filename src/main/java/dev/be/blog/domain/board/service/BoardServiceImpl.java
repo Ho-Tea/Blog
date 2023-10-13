@@ -21,15 +21,21 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
+
     @Override
     @Transactional
     public BoardResponse create(BoardRequest request, UserAdapter userAdapter) {
         validateDuplicate(request.getBoardName());
         return BoardResponse.from(boardRepository.save(Board.builder().user(userAdapter.getUser()).boardName(request.getBoardName()).build()));
     }
-    private void validateDuplicate(String boardName){
-        boardRepository.findByBoardName(boardName).ifPresent(o -> {throw new GlobalException(ResponseCode.ErrorCode.DUPLICATE_BOARD);});
-    };
+
+    private void validateDuplicate(String boardName) {
+        boardRepository.findByBoardName(boardName).ifPresent(o -> {
+            throw new GlobalException(ResponseCode.ErrorCode.DUPLICATE_BOARD);
+        });
+    }
+
+    ;
 
     @Override
     public Page<BoardResponse> findAll(int page, int size) {
@@ -52,17 +58,18 @@ public class BoardServiceImpl implements BoardService {
         return BoardResponse.from(board);
     }
 
-    private void validateWriter(Board board, UserAdapter userAdapter, ResponseCode.ErrorCode errorCode){
-        if(!board.getUser().equals(userAdapter.getUser())){
+    private void validateWriter(Board board, UserAdapter userAdapter, ResponseCode.ErrorCode errorCode) {
+        if (!board.getUser().equals(userAdapter.getUser())) {
             throw new GlobalException(errorCode);
         }
     }
+
     @Override
     @Transactional
     public void delete(Long itemId, UserAdapter userAdapter) {
         Board board = boardRepository.findById(itemId)
                 .orElseThrow(() -> new GlobalException(ResponseCode.ErrorCode.NOT_FOUND_BOARD));
-        validateWriter(board ,userAdapter, ResponseCode.ErrorCode.NOT_AUTHORITY_DELETE);
+        validateWriter(board, userAdapter, ResponseCode.ErrorCode.NOT_AUTHORITY_DELETE);
         boardRepository.delete(board);
     }
 

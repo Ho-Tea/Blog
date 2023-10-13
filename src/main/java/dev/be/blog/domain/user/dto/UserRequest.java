@@ -4,7 +4,6 @@ import dev.be.blog.domain.user.entity.Users;
 import dev.be.blog.global.common.vo.Authority;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +27,7 @@ public class UserRequest {
     private String nickName;
 
 
-    public static Users toEntity(UserRequest userRequest, String password, Authority authority){
+    public static Users toEntity(UserRequest userRequest, String password, Authority authority) {
         return Users.builder()
                 .email(userRequest.email)
                 .nickName(userRequest.nickName)

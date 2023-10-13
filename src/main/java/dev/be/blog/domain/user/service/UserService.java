@@ -47,6 +47,8 @@ public class UserService {
 
     private void validateDuplicateUser(UserRequest userDto) {
         userRepository.findByEmail(userDto.getEmail())
-                .ifPresent( o -> {throw new GlobalException(ResponseCode.ErrorCode.DUPLICATE_USER);});
-        }
+                .ifPresent(o -> {
+                    throw new GlobalException(ResponseCode.ErrorCode.DUPLICATE_USER);
+                });
+    }
 }
