@@ -20,13 +20,13 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
-<div class="counter">6</div>
+<div class="counter">58</div>
 <p>tests</p>
 </div>
 </td>
 <td>
 <div class="infoBox" id="failures">
-<div class="counter">0</div>
+<div class="counter">9</div>
 <p>failures</p>
 </div>
 </td>
@@ -38,7 +38,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.083s</div>
+<div class="counter">0.695s</div>
 <p>duration</p>
 </div>
 </td>
@@ -47,8 +47,8 @@
 </div>
 </td>
 <td>
-<div class="infoBox success" id="successRate">
-<div class="percent">100%</div>
+<div class="infoBox failures" id="successRate">
+<div class="percent">84%</div>
 <p>successful</p>
 </div>
 </td>
@@ -58,13 +58,57 @@
 <div id="tabs">
 <ul class="tabLinks">
 <li>
-<a href="#tab0">Packages</a>
+<a href="#tab0">Failed tests</a>
 </li>
 <li>
-<a href="#tab1">Classes</a>
+<a href="#tab1">Packages</a>
+</li>
+<li>
+<a href="#tab2">Classes</a>
 </li>
 </ul>
 <div id="tab0" class="tab">
+<h2>Failed tests</h2>
+<ul class="linkList">
+<li>
+<a href="classes/dev.be.blog.domain.board.repository.BoardRepositoryTest.html">BoardRepositoryTest</a>.
+<a href="classes/dev.be.blog.domain.board.repository.BoardRepositoryTest.html#deleteById()">Repository - deleteById 메서드 검증</a>
+</li>
+<li>
+<a href="classes/dev.be.blog.domain.board.repository.BoardRepositoryTest.html">BoardRepositoryTest</a>.
+<a href="classes/dev.be.blog.domain.board.repository.BoardRepositoryTest.html#findAllByOrderByBoardIdDesc()">Repository - findAllByOrderByBoardIdDesc 메서드 검증</a>
+</li>
+<li>
+<a href="classes/dev.be.blog.domain.board.repository.BoardRepositoryTest.html">BoardRepositoryTest</a>.
+<a href="classes/dev.be.blog.domain.board.repository.BoardRepositoryTest.html#findByBoardName()">Repository - findByBoardName 메서드 검증</a>
+</li>
+<li>
+<a href="classes/dev.be.blog.domain.board.repository.BoardRepositoryTest.html">BoardRepositoryTest</a>.
+<a href="classes/dev.be.blog.domain.board.repository.BoardRepositoryTest.html#findById()">Repository - findById 메서드 검증</a>
+</li>
+<li>
+<a href="classes/dev.be.blog.domain.board.repository.BoardRepositoryTest.html">BoardRepositoryTest</a>.
+<a href="classes/dev.be.blog.domain.board.repository.BoardRepositoryTest.html#save()">Repository - save 메서드 검증</a>
+</li>
+<li>
+<a href="classes/dev.be.blog.domain.post.repository.PostRepositoryTest.html">PostRepositoryTest</a>.
+<a href="classes/dev.be.blog.domain.post.repository.PostRepositoryTest.html#deleteById()">Repository - deleteById 메서드 검증</a>
+</li>
+<li>
+<a href="classes/dev.be.blog.domain.post.repository.PostRepositoryTest.html">PostRepositoryTest</a>.
+<a href="classes/dev.be.blog.domain.post.repository.PostRepositoryTest.html#findAllByOrderByPostIdDesc()">Repository - findAllByOrderByPostIdDesc 메서드 검증</a>
+</li>
+<li>
+<a href="classes/dev.be.blog.domain.post.repository.PostRepositoryTest.html">PostRepositoryTest</a>.
+<a href="classes/dev.be.blog.domain.post.repository.PostRepositoryTest.html#findById()">Repository - findById 메서드 검증</a>
+</li>
+<li>
+<a href="classes/dev.be.blog.domain.post.repository.PostRepositoryTest.html">PostRepositoryTest</a>.
+<a href="classes/dev.be.blog.domain.post.repository.PostRepositoryTest.html#save()">Repository - save 메서드 검증</a>
+</li>
+</ul>
+</div>
+<div id="tab1" class="tab">
 <h2>Packages</h2>
 <table>
 <thead>
@@ -80,18 +124,68 @@
 <tbody>
 <tr>
 <td class="success">
-<a href="packages/dev.be.blog.domain.html">dev.be.blog.domain</a>
+<a href="packages/dev.be.blog.domain.board.controller.html">dev.be.blog.domain.board.controller</a>
 </td>
-<td>6</td>
+<td>15</td>
 <td>0</td>
 <td>0</td>
-<td>0.083s</td>
+<td>0.418s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="failures">
+<a href="packages/dev.be.blog.domain.board.repository.html">dev.be.blog.domain.board.repository</a>
+</td>
+<td>5</td>
+<td>5</td>
+<td>0</td>
+<td>0.002s</td>
+<td class="failures">0%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="packages/dev.be.blog.domain.board.service.html">dev.be.blog.domain.board.service</a>
+</td>
+<td>10</td>
+<td>0</td>
+<td>0</td>
+<td>0.166s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="packages/dev.be.blog.domain.post.controller.html">dev.be.blog.domain.post.controller</a>
+</td>
+<td>15</td>
+<td>0</td>
+<td>0</td>
+<td>0.055s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="failures">
+<a href="packages/dev.be.blog.domain.post.repository.html">dev.be.blog.domain.post.repository</a>
+</td>
+<td>4</td>
+<td>4</td>
+<td>0</td>
+<td>0.002s</td>
+<td class="failures">0%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="packages/dev.be.blog.domain.post.service.html">dev.be.blog.domain.post.service</a>
+</td>
+<td>9</td>
+<td>0</td>
+<td>0</td>
+<td>0.052s</td>
 <td class="success">100%</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="tab1" class="tab">
+<div id="tab2" class="tab">
 <h2>Classes</h2>
 <table>
 <thead>
@@ -107,12 +201,62 @@
 <tbody>
 <tr>
 <td class="success">
-<a href="classes/dev.be.blog.domain.CategoryTest.html">dev.be.blog.domain.CategoryTest</a>
+<a href="classes/dev.be.blog.domain.board.controller.BoardControllerTest.html">dev.be.blog.domain.board.controller.BoardControllerTest</a>
 </td>
-<td>6</td>
+<td>15</td>
 <td>0</td>
 <td>0</td>
-<td>0.083s</td>
+<td>0.418s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="failures">
+<a href="classes/dev.be.blog.domain.board.repository.BoardRepositoryTest.html">dev.be.blog.domain.board.repository.BoardRepositoryTest</a>
+</td>
+<td>5</td>
+<td>5</td>
+<td>0</td>
+<td>0.002s</td>
+<td class="failures">0%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="classes/dev.be.blog.domain.board.service.BoardServiceImplTest.html">dev.be.blog.domain.board.service.BoardServiceImplTest</a>
+</td>
+<td>10</td>
+<td>0</td>
+<td>0</td>
+<td>0.166s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="classes/dev.be.blog.domain.post.controller.PostControllerTest.html">dev.be.blog.domain.post.controller.PostControllerTest</a>
+</td>
+<td>15</td>
+<td>0</td>
+<td>0</td>
+<td>0.055s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="failures">
+<a href="classes/dev.be.blog.domain.post.repository.PostRepositoryTest.html">dev.be.blog.domain.post.repository.PostRepositoryTest</a>
+</td>
+<td>4</td>
+<td>4</td>
+<td>0</td>
+<td>0.002s</td>
+<td class="failures">0%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="classes/dev.be.blog.domain.post.service.PostServiceImplTest.html">dev.be.blog.domain.post.service.PostServiceImplTest</a>
+</td>
+<td>9</td>
+<td>0</td>
+<td>0</td>
+<td>0.052s</td>
 <td class="success">100%</td>
 </tr>
 </tbody>
@@ -126,7 +270,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.6.1</a> at 2023. 9. 12. 오후 11:37:39</p>
+<a href="http://www.gradle.org">Gradle 7.6.1</a> at 2023. 10. 11. 오전 3:24:28</p>
 </div>
 </div>
 </body>
