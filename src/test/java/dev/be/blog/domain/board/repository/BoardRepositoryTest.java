@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 내장 데이터베이스를 사용하지 않음
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 내장 데이터베이스를 사용하지 않음
 class BoardRepositoryTest {
     @Autowired
     private BoardRepository boardRepository;
