@@ -22,6 +22,10 @@ jwt:
   secret: c3ByaW5nLXNlY3VyaXR5LXlvb25qdWhvLXN0dWR5LXNwcmluZy1mcmFtZXdvcmstaW4tdW5pdmVyc2l0eS1hYmNkZWZnaGlqa2xtbm9wcXJzdHV2d3h5ei1sb3ZlbWUtaS1oYXRlLXlvdQ==
   token-validity-in-seconds: 86400
 
+server:
+  tomcat:
+    connection-timeout: -1
+
 
 ---
 
